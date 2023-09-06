@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<BS-1116>
+  <info startTime="2020-03-12T11:30:34.230-04:00" stopTime="2020-03-12T12:15:38.003-04:00"
+        subjectName="A" testName="Example Evaluation" stimuliDirectory="~/Desktop/Test"
+        testStatus="complete"/>
+  <trials>ƒ
+    <trial trialName="stimulus_6" trialSeconds="67.0" referencePlays="4">
+      <testFile fileName="stimulus_6_reference.wav" plays="4" score="5.0"/>
+      <testFile fileName="stimulus_6_coded_a.wav" plays="4" score="3.0"/>
+    </trial>
+    <trial trialName="stimulus_4" trialSeconds="59.0" referencePlays="8">
+      <testFile fileName="stimulus_4_coded_a.wav" plays="9" score="3.799999952316284"/>
+      <testFile fileName="stimulus_4_reference.wav" plays="6" score="5.0"/>
+    </trial>
+    <trial trialName="stimulus_7" trialSeconds="180.0" referencePlays="14">
+      <testFile fileName="stimulus_7_coded_c.wav" plays="14" score="4.900000095367432"/>
+      <testFile fileName="stimulus_7_reference.wav" plays="11" score="5.0"/>
+    </trial>
+    <trial trialName="stimulus_4" trialSeconds="145.0" referencePlays="30">
+      <testFile fileName="stimulus_4_coded_c.wav" plays="23" score="4.900000095367432"/>
+      <testFile fileName="stimulus_4_reference.wav" plays="24" score="5.0"/>
+    </trial>
+    <trial trialName="stimulus_6" trialSeconds="120.0" referencePlays="6">
+      <testFile fileName="stimulus_6_reference.wav" plays="9" score="5.0"/>
+      <testFile fileName="stimulus_6_coded_b.wav" plays="7" score="4.900000095367432"/>
+    </trial>
+    <trial trialName="stimulus_8" trialSeconds="134.0" referencePlays="11">
+      <testFile fileName="stimulus_8_coded_a.wav" plays="13" score="4.699999809265137"/>
+      <testFile fileName="stimulus_8_reference.wav" plays="12" score="5.0"/>
+    </trial>
+    <trial trialName="stimulus_5" trialSeconds="127.0" referencePlays="29">
+      <testFile fileName="stimulus_5_reference.wav" plays="18" score="4.900000095367432"/>
+      <testFile fileName="stimulus_5_coded_b.wav" plays="17" score="5.0"/>
+    </trial>
+    <trial trialName="stimulus_1" trialSeconds="110.0" referencePlays="5">
+      <testFile fileName="stimulus_1_coded_b.wav" plays="8" score="5.0"/>
+      <testFile fileName="stimulus_1_reference.wav" plays="7" score="4.800000190734863"/>
+    </trial>
+    <trial trialName="stimulus_3" trialSeconds="122.0" referencePlays="17">
+      <testFile fileName="stimulus_3_coded_b.wav" plays="15" score="4.900000095367432"/>
+      <testFile fileName="stimulus_3_reference.wav" plays="13" score="5.0"/>
+    </trial>
+    <trial trialName="stimulus_8" trialSeconds="146.0" referencePlays="26">
+      <testFile fileName="stimulus_8_coded_b.wav" plays="21" score="5.0"/>
+      <testFile fileName="stimulus_8_reference.wav" plays="12" score="4.900000095367432"/>
+    </trial>
+    <trial trialName="stimulus_1" trialSeconds="81.0" referencePlays="7">
+      <testFile fileName="stimulus_1_coded_a.wav" plays="7" score="4.599999904632568"/>
+      <testFile fileName="stimulus_1_reference.wav" plays="7" score="5.0"/>
+    </trial>
+    <trial trialName="stimulus_5" trialSeconds="130.0" referencePlays="17">
+      <testFile fileName="stimulus_5_reference.wav" plays="10" score="5.0"/>
+      <testFile fileName="stimulus_5_coded_c.wav" plays="8" score="4.800000190734863"/>
+    </trial>
+    <trial trialName="stimulus_8" trialSeconds="179.0" referencePlays="22">
+      <testFile fileName="stimulus_8_reference.wav" plays="23" score="4.900000095367432"/>
+      <testFile fileName="stimulus_8_coded_c.wav" plays="27" score="5.0"/>
+    </trial>
+    <trial trialName="stimulus_7" trialSeconds="96.0" referencePlays="7">
+      <testFile fileName="stimulus_7_reference.wav" plays="7" score="5.0"/>
+      <testFile fileName="stimulus_7_coded_a.wav" plays="6" score="4.900000095367432"/>
+    </trial>
+    <trial trialName="stimulus_3" trialSeconds="77.0" referencePlays="4">
+      <testFile fileName="stimulus_3_coded_a.wav" plays="5" score="4.599999904632568"/>
+      <testFile fileName="stimulus_3_reference.wav" plays="2" score="5.0"/>
+    </trial>
+    <trial trialName="stimulus_6" trialSeconds="118.0" referencePlays="15">
+      <testFile fileName="stimulus_6_reference.wav" plays="8" score="5.0"/>
+      <testFile fileName="stimulus_6_coded_c.wav" plays="12" score="4.900000095367432"/>
+    </trial>
+    <trial trialName="stimulus_2" trialSeconds="51.0" referencePlays="3">
+      <testFile fileName="stimulus_2_reference.wav" plays="2" score="5.0"/>
+      <testFile fileName="stimulus_2_coded_a.wav" plays="3" score="4.0"/>
+    </trial>
+    <trial trialName="stimulus_4" trialSeconds="103.0" referencePlays="7">
+      <testFile fileName="stimulus_4_coded_b.wav" plays="11" score="4.900000095367432"/>
+      <testFile fileName="stimulus_4_reference.wav" plays="11" score="5.0"/>
+    </trial>
+    <trial trialName="stimulus_5" trialSeconds="145.0" referencePlays="5">
+      <testFile fileName="stimulus_5_reference.wav" plays="6" score="5.0"/>
+      <testFile fileName="stimulus_5_coded_a.wav" plays="8" score="4.900000095367432"/>
+    </trial>
+    <trial trialName="stimulus_7" trialSeconds="125.0" referencePlays="12">
+      <testFile fileName="stimulus_7_reference.wav" plays="9" score="4.900000095367432"/>
+      <testFile fileName="stimulus_7_coded_b.wav" plays="8" score="5.0"/>
+    </trial>
+    <trial trialName="stimulus_1" trialSeconds="75.0" referencePlays="3">
+      <testFile fileName="stimulus_1_coded_c.wav" plays="4" score="4.599999904632568"/>
+      <testFile fileName="stimulus_1_reference.wav" plays="4" score="5.0"/>
+    </trial>
+    <trial trialName="stimulus_2" trialSeconds="60.0" referencePlays="3">
+      <testFile fileName="stimulus_2_coded_c.wav" plays="4" score="4.800000190734863"/>
+      <testFile fileName="stimulus_2_reference.wav" plays="3" score="5.0"/>
+    </trial>
+    <trial trialName="stimulus_2" trialSeconds="92.0" referencePlays="12">
+      <testFile fileName="stimulus_2_coded_b.wav" plays="9" score="4.900000095367432"/>
+      <testFile fileName="stimulus_2_reference.wav" plays="8" score="5.0"/>
+    </trial>
+    <trial trialName="stimulus_3" trialSeconds="95.0" referencePlays="3">
+      <testFile fileName="stimulus_3_coded_c.wav" plays="7" score="4.900000095367432"/>
+      <testFile fileName="stimulus_3_reference.wav" plays="6" score="5.0"/>
+    </trial>
+  </trials>
+</BS-1116>

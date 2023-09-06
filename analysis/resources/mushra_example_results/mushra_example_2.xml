@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<MUSHRA>
+  <info startTime="2022-04-19T15:32:35.419-07:00" stopTime="2022-04-19T16:38:27.249-07:00"
+        subjectName="B" testName="Example_mushra" stimuliDirectory="~/Desktop/LT/Stimuli"
+        testStatus="complete"/>
+  <surveyResults surveyCompleted="0"/>
+  <trials>
+    <trial trialName="stimulus3" trialSeconds="818.0" referencePlays="20">
+      <testFile fileName="stimulus3_codec1_br2.wav" plays="11" score="98.0"/>
+      <testFile fileName="stimulus3_codec2_br1.wav" plays="9" score="93.0"/>
+      <testFile fileName="stimulus3_codec2_br2.wav" plays="12" score="96.0"/>
+      <testFile fileName="stimulus3_codec3_br3.wav" plays="6" score="78.0"/>
+      <testFile fileName="stimulus3_35anchor.wav" plays="3" score="19.0"/>
+      <testFile fileName="stimulus3_reference_m24.wav" plays="8" score="100.0"/>
+      <testFile fileName="stimulus3_7anchor.wav" plays="2" score="29.0"/>
+      <testFile fileName="stimulus3_codec1_br1.wav" plays="6" score="91.0"/>
+      <testFile fileName="stimulus3_codec3_br4.wav" plays="6" score="81.0"/>
+    </trial>
+    <trial trialName="stimulus1" trialSeconds="609.0" referencePlays="36">
+      <testFile fileName="stimulus1_codec2_br1.wav" plays="16" score="98.0"/>
+      <testFile fileName="stimulus1_codec2_br2.wav" plays="19" score="99.0"/>
+      <testFile fileName="stimulus1_codec3_br4.wav" plays="21" score="100.0"/>
+      <testFile fileName="stimulus1_codec3_br3.wav" plays="20" score="99.0"/>
+      <testFile fileName="stimulus1_7anchor.wav" plays="14" score="44.0"/>
+      <testFile fileName="stimulus1_codec1_br1.wav" plays="22" score="99.0"/>
+      <testFile fileName="stimulus1_reference_m24.wav" plays="19" score="98.0"/>
+      <testFile fileName="stimulus1_codec1_br2.wav" plays="19" score="99.0"/>
+      <testFile fileName="stimulus1_35anchor.wav" plays="5" score="12.0"/>
+    </trial>
+    <trial trialName="stimulus7" trialSeconds="493.0" referencePlays="61">
+      <testFile fileName="stimulus7_7anchor.wav" plays="10" score="46.0"/>
+      <testFile fileName="stimulus7_codec2_br2.wav" plays="13" score="91.0"/>
+      <testFile fileName="stimulus7_35anchor.wav" plays="5" score="15.0"/>
+      <testFile fileName="stimulus7_codec2_br1.wav" plays="24" score="98.0"/>
+      <testFile fileName="stimulus7_reference_m24.wav" plays="21" score="99.0"/>
+      <testFile fileName="stimulus7_codec1_br2.wav" plays="19" score="99.0"/>
+      <testFile fileName="stimulus7_codec3_br4.wav" plays="17" score="100.0"/>
+      <testFile fileName="stimulus7_codec3_br3.wav" plays="15" score="99.0"/>
+      <testFile fileName="stimulus7_codec1_br1.wav" plays="12" score="99.0"/>
+    </trial>
+    <trial trialName="stimulus5" trialSeconds="354.0" referencePlays="34">
+      <testFile fileName="stimulus5_reference_m24.wav" plays="6" score="95.0"/>
+      <testFile fileName="stimulus5_codec1_br2.wav" plays="19" score="100.0"/>
+      <testFile fileName="stimulus5_35anchor.wav" plays="3" score="29.0"/>
+      <testFile fileName="stimulus5_codec1_br1.wav" plays="14" score="99.0"/>
+      <testFile fileName="stimulus5_codec2_br2.wav" plays="9" score="97.0"/>
+      <testFile fileName="stimulus5_codec2_br1.wav" plays="8" score="98.0"/>
+      <testFile fileName="stimulus5_codec3_br3.wav" plays="15" score="99.0"/>
+      <testFile fileName="stimulus5_7anchor.wav" plays="2" score="47.0"/>
+      <testFile fileName="stimulus5_codec3_br4.wav" plays="14" score="99.0"/>
+    </trial>
+    <trial trialName="stimulus2" trialSeconds="203.0" referencePlays="11">
+      <testFile fileName="stimulus2_codec2_br2.wav" plays="7" score="99.0"/>
+      <testFile fileName="stimulus2_codec1_br2.wav" plays="3" score="97.0"/>
+      <testFile fileName="stimulus2_codec3_br4.wav" plays="7" score="99.0"/>
+      <testFile fileName="stimulus2_codec2_br1.wav" plays="7" score="99.0"/>
+      <testFile fileName="stimulus2_codec1_br1.wav" plays="7" score="100.0"/>
+      <testFile fileName="stimulus2_reference_m24.wav" plays="5" score="99.0"/>
+      <testFile fileName="stimulus2_35anchor.wav" plays="1" score="14.0"/>
+      <testFile fileName="stimulus2_codec3_br3.wav" plays="4" score="97.0"/>
+      <testFile fileName="stimulus2_7anchor.wav" plays="2" score="37.0"/>
+    </trial>
+    <trial trialName="stimulus9" trialSeconds="349.0" referencePlays="39">
+      <testFile fileName="stimulus9_reference_m24.wav" plays="10" score="98.0"/>
+      <testFile fileName="stimulus9_7anchor.wav" plays="3" score="49.0"/>
+      <testFile fileName="stimulus9_codec3_br3.wav" plays="15" score="100.0"/>
+      <testFile fileName="stimulus9_codec1_br1.wav" plays="9" score="98.0"/>
+      <testFile fileName="stimulus9_codec1_br2.wav" plays="9" score="98.0"/>
+      <testFile fileName="stimulus9_codec2_br2.wav" plays="11" score="99.0"/>
+      <testFile fileName="stimulus9_codec2_br1.wav" plays="11" score="99.0"/>
+      <testFile fileName="stimulus9_codec3_br4.wav" plays="15" score="98.0"/>
+      <testFile fileName="stimulus9_35anchor.wav" plays="2" score="19.0"/>
+    </trial>
+    <trial trialName="stimulus8" trialSeconds="383.0" referencePlays="18">
+      <testFile fileName="stimulus8_reference_m24.wav" plays="9" score="99.0"/>
+      <testFile fileName="stimulus8_7anchor.wav" plays="1" score="48.0"/>
+      <testFile fileName="stimulus8_35anchor.wav" plays="2" score="14.0"/>
+      <testFile fileName="stimulus8_codec1_br1.wav" plays="8" score="99.0"/>
+      <testFile fileName="stimulus8_codec3_br4.wav" plays="11" score="99.0"/>
+      <testFile fileName="stimulus8_codec1_br2.wav" plays="11" score="100.0"/>
+      <testFile fileName="stimulus8_codec2_br1.wav" plays="5" score="98.0"/>
+      <testFile fileName="stimulus8_codec3_br3.wav" plays="11" score="99.0"/>
+      <testFile fileName="stimulus8_codec2_br2.wav" plays="6" score="95.0"/>
+    </trial>
+    <trial trialName="stimulus4" trialSeconds="470.0" referencePlays="90">
+      <testFile fileName="stimulus4_35anchor.wav" plays="7" score="23.0"/>
+      <testFile fileName="stimulus4_codec1_br1.wav" plays="19" score="99.0"/>
+      <testFile fileName="stimulus4_codec2_br2.wav" plays="12" score="97.0"/>
+      <testFile fileName="stimulus4_codec1_br2.wav" plays="20" score="98.0"/>
+      <testFile fileName="stimulus4_codec3_br4.wav" plays="21" score="99.0"/>
+      <testFile fileName="stimulus4_reference_m24.wav" plays="22" score="100.0"/>
+      <testFile fileName="stimulus4_codec2_br1.wav" plays="22" score="99.0"/>
+      <testFile fileName="stimulus4_codec3_br3.wav" plays="18" score="99.0"/>
+      <testFile fileName="stimulus4_7anchor.wav" plays="11" score="67.0"/>
+    </trial>
+    <trial trialName="stimulus6" trialSeconds="250.0" referencePlays="22">
+      <testFile fileName="stimulus6_7anchor.wav" plays="3" score="47.0"/>
+      <testFile fileName="stimulus6_codec2_br2.wav" plays="8" score="98.0"/>
+      <testFile fileName="stimulus6_codec2_br1.wav" plays="8" score="93.0"/>
+      <testFile fileName="stimulus6_35anchor.wav" plays="2" score="27.0"/>
+      <testFile fileName="stimulus6_reference_m24.wav" plays="7" score="99.0"/>
+      <testFile fileName="stimulus6_codec3_br3.wav" plays="7" score="98.0"/>
+      <testFile fileName="stimulus6_codec3_br4.wav" plays="8" score="92.0"/>
+      <testFile fileName="stimulus6_codec1_br1.wav" plays="8" score="99.0"/>
+      <testFile fileName="stimulus6_codec1_br2.wav" plays="6" score="100.0"/>
+    </trial>
+  </trials>
+</MUSHRA>

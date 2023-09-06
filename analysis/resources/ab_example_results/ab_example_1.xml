@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<AudioVideo_AB_Forced_Choice>
+  <info startTime="2022-02-10T12:41:32.113-05:00" stopTime="2022-02-10T13:16:14.887-05:00"
+        subjectName="109" testName="AB Preference" stimuliDirectory="~/desktop/test"
+        testStatus="complete"/>
+  <trials>
+    <trial trialName="wan00" trialSeconds="203.0" referencePlays="0">
+      <testFile fileName="wan00.system2.wav" plays="5" score="0.0"/>
+      <testFile fileName="wan00.system1.wav" plays="5" score="1.0"/>
+      <videoFile fileName="wan00.mp4"/>
+    </trial>
+    <trial trialName="kitrow" trialSeconds="94.0" referencePlays="0">
+      <testFile fileName="kitrow_system2.wav" plays="5" score="1.0"/>
+      <testFile fileName="kitrow.system1.wav" plays="4" score="0.0"/>
+      <videoFile fileName="WI_79_11-79_29.mov.mp4"/>
+    </trial>
+    <trial trialName="happy29" trialSeconds="108.0" referencePlays="0">
+      <testFile fileName="happy29.system2.wav" plays="7" score="0.0"/>
+      <testFile fileName="happy29.system1.wav" plays="7" score="1.0"/>
+      <videoFile fileName="happy29.mp4"/>
+    </trial>
+    <trial trialName="neongreen15" trialSeconds="60.0" referencePlays="0">
+      <testFile fileName="neongreen15.system1.wav" plays="3" score="1.0"/>
+      <testFile fileName="neongreen15.system2.wav" plays="2" score="0.0"/>
+      <videoFile fileName="neongreen15.mp4"/>
+    </trial>
+    <trial trialName="wan09" trialSeconds="85.0" referencePlays="0">
+      <testFile fileName="wan09.system2.wav" plays="5" score="1.0"/>
+      <testFile fileName="wan09.system1.wav" plays="4" score="0.0"/>
+      <videoFile fileName="wan09.mp4"/>
+    </trial>
+    <trial trialName="extrstimulus801" trialSeconds="44.0" referencePlays="0">
+      <testFile fileName="extrstimulus801.system1.wav" plays="1" score="0.0"/>
+      <testFile fileName="extrstimulus801.system2.wav" plays="1" score="1.0"/>
+      <videoFile fileName="extrstimulus801.mp4"/>
+    </trial>
+    <trial trialName="soda" trialSeconds="73.0" referencePlays="0">
+      <testFile fileName="soda.system2.wav" plays="3" score="1.0"/>
+      <testFile fileName="soda_system1.wav" plays="2" score="0.0"/>
+      <videoFile fileName="soda.mp4"/>
+    </trial>
+    <trial trialName="extrstimulus840" trialSeconds="81.0" referencePlays="0">
+      <testFile fileName="extrstimulus840.system2.wav" plays="3" score="0.0"/>
+      <testFile fileName="extrstimulus840.system1.wav" plays="3" score="1.0"/>
+      <videoFile fileName="extrstimulus840.mp4"/>
+    </trial>
+    <trial trialName="extrstimulus832" trialSeconds="52.0" referencePlays="0">
+      <testFile fileName="extrstimulus832.system1.wav" plays="2" score="1.0"/>
+      <testFile fileName="extrstimulus832.system2.wav" plays="1" score="0.0"/>
+      <videoFile fileName="extrstimulus832.mp4"/>
+    </trial>
+    <trial trialName="gecko02" trialSeconds="72.0" referencePlays="0">
+      <testFile fileName="gecko02.system2.wav" plays="2" score="1.0"/>
+      <testFile fileName="gecko02_system1.wav" plays="1" score="0.0"/>
+      <videoFile fileName="gecko02.mp4"/>
+    </trial>
+    <trial trialName="amore11" trialSeconds="43.0" referencePlays="0">
+      <testFile fileName="amore11.system1.wav" plays="1" score="0.0"/>
+      <testFile fileName="amore11.system2.wav" plays="1" score="1.0"/>
+      <videoFile fileName="amore11.mp4"/>
+    </trial>
+    <trial trialName="soda24" trialSeconds="46.0" referencePlays="0">
+      <testFile fileName="soda24.system2.wav" plays="1" score="1.0"/>
+      <testFile fileName="soda24.system1.wav" plays="1" score="0.0"/>
+      <videoFile fileName="soda24.mp4"/>
+    </trial>
+    <trial trialName="mug14" trialSeconds="69.0" referencePlays="0">
+      <testFile fileName="mug14.system1.wav" plays="2" score="1.0"/>
+      <testFile fileName="mug14.system2.wav" plays="1" score="0.0"/>
+      <videoFile fileName="mug14.mp4"/>
+    </trial>
+    <trial trialName="gecko01" trialSeconds="47.0" referencePlays="0">
+      <testFile fileName="gecko01.system2.wav" plays="1" score="0.0"/>
+      <testFile fileName="gecko01_system1.wav" plays="1" score="1.0"/>
+      <videoFile fileName="gecko01.mp4"/>
+    </trial>
+    <trial trialName="happy10" trialSeconds="49.0" referencePlays="0">
+      <testFile fileName="happy10.system2.wav" plays="3" score="1.0"/>
+      <testFile fileName="happy10.system1.wav" plays="2" score="0.0"/>
+      <videoFile fileName="happy10.mp4"/>
+    </trial>
+    <trial trialName="happy03" trialSeconds="56.0" referencePlays="0">
+      <testFile fileName="happy03.system1.wav" plays="2" score="0.0"/>
+      <testFile fileName="happy03.system2.wav" plays="1" score="1.0"/>
+      <videoFile fileName="happy03.mp4"/>
+    </trial>
+    <trial trialName="wan07" trialSeconds="31.0" referencePlays="0">
+      <testFile fileName="wan07.system2.wav" plays="1" score="0.0"/>
+      <testFile fileName="wan07.system1.wav" plays="1" score="1.0"/>
+      <videoFile fileName="wan07.mp4"/>
+    </trial>
+    <trial trialName="tiki11" trialSeconds="55.0" referencePlays="0">
+      <testFile fileName="tiki11.system2.wav" plays="4" score="0.0"/>
+      <testFile fileName="tiki11.system1.wav" plays="4" score="1.0"/>
+      <videoFile fileName="tiki11.mp4"/>
+    </trial>
+    <trial trialName="helicopter" trialSeconds="50.0" referencePlays="0">
+      <testFile fileName="helicopter_system1.wav" plays="6" score="0.0"/>
+      <testFile fileName="helicopter.system2.wav" plays="6" score="1.0"/>
+      <videoFile fileName="helicopter.mp4"/>
+    </trial>
+    <trial trialName="amore03" trialSeconds="59.0" referencePlays="0">
+      <testFile fileName="amore03.system2.wav" plays="5" score="1.0"/>
+      <testFile fileName="amore03.system1.wav" plays="4" score="0.0"/>
+      <videoFile fileName="amore03.mp4"/>
+    </trial>
+    <trial trialName="subway13" trialSeconds="66.0" referencePlays="0">
+      <testFile fileName="subway13.system1.wav" plays="7" score="0.0"/>
+      <testFile fileName="subway13.system2.wav" plays="7" score="1.0"/>
+      <videoFile fileName="subway13.mp4"/>
+    </trial>
+    <trial trialName="subway15" trialSeconds="45.0" referencePlays="0">
+      <testFile fileName="subway15.system1.wav" plays="2" score="0.0"/>
+      <testFile fileName="subway15.system2.wav" plays="2" score="1.0"/>
+      <videoFile fileName="subway15.mp4"/>
+    </trial>
+    <trial trialName="wan08" trialSeconds="61.0" referencePlays="0">
+      <testFile fileName="wan08.system2.wav" plays="1" score="0.0"/>
+      <testFile fileName="wan08.system1.wav" plays="1" score="1.0"/>
+      <videoFile fileName="wan08.mp4"/>
+    </trial>
+    <trial trialName="extrstimulus827" trialSeconds="59.0" referencePlays="0">
+      <testFile fileName="extrstimulus827.system1.wav" plays="4" score="0.0"/>
+      <testFile fileName="extrstimulus827.system2.wav" plays="4" score="1.0"/>
+      <videoFile fileName="extrstimulus827.mp4"/>
+    </trial>
+    <trial trialName="wan18" trialSeconds="78.0" referencePlays="0">
+      <testFile fileName="wan18.system1.wav" plays="10" score="1.0"/>
+      <testFile fileName="wan18.system2.wav" plays="9" score="0.0"/>
+      <videoFile fileName="wan18.mp4"/>
+    </trial>
+    <trial trialName="tiki08" trialSeconds="44.0" referencePlays="0">
+      <testFile fileName="tiki08.system1.wav" plays="1" score="0.0"/>
+      <testFile fileName="tiki08.system2.wav" plays="1" score="1.0"/>
+      <videoFile fileName="tiki08.mp4"/>
+    </trial>
+    <trial trialName="neongreen10" trialSeconds="53.0" referencePlays="0">
+      <testFile fileName="neongreen10.system2.wav" plays="5" score="1.0"/>
+      <testFile fileName="neongreen10._system1.wav" plays="4" score="0.0"/>
+      <videoFile fileName="neongreen10.mp4"/>
+    </trial>
+    <trial trialName="mug08" trialSeconds="38.0" referencePlays="0">
+      <testFile fileName="mug08.system2.wav" plays="1" score="0.0"/>
+      <testFile fileName="mug08.system1.wav" plays="1" score="1.0"/>
+      <videoFile fileName="mug08.mp4"/>
+    </trial>
+    <trial trialName="tiki09" trialSeconds="57.0" referencePlays="0">
+      <testFile fileName="tiki09.system1.wav" plays="4" score="1.0"/>
+      <testFile fileName="tiki09.system2.wav" plays="3" score="0.0"/>
+      <videoFile fileName="tiki09.mp4"/>
+    </trial>
+    <trial trialName="happy06" trialSeconds="32.0" referencePlays="0">
+      <testFile fileName="happy06.system1.wav" plays="2" score="0.0"/>
+      <testFile fileName="happy06.system2.wav" plays="2" score="1.0"/>
+      <videoFile fileName="happy06.mp4"/>
+    </trial>
+    <trial trialName="subway03" trialSeconds="62.0" referencePlays="0">
+      <testFile fileName="subway03.system1.wav" plays="1" score="0.0"/>
+      <testFile fileName="subway03.system2.wav" plays="1" score="1.0"/>
+      <videoFile fileName="subway03.mp4"/>
+    </trial>
+    <trial trialName="happy26" trialSeconds="53.0" referencePlays="0">
+      <testFile fileName="happy26.system1.wav" plays="5" score="1.0"/>
+      <testFile fileName="happy26.system2.wav" plays="4" score="0.0"/>
+      <videoFile fileName="happy26.mp4"/>
+    </trial>
+  </trials>
+</AudioVideo_AB_Forced_Choice>
