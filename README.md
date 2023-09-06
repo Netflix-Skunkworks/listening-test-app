@@ -15,6 +15,15 @@ The software is released under GNU General Public License Version 3.  See licens
 
 The listening test application is build on top of JUCE, an open-source audio processing & UI framework.  JUCE is a cross-platform framework, but only MacOS targets have been tested.  Windows build projects under MSVS 2019 are generated, but untested.
 
+xCode command line tools are required to build the application from the command line.  These commands install & set them up:
+
+```
+xcode-select --install
+xcode-select -switch /Applications/Xcode.app/Contents/Developer
+xcodebuild -license
+xcodebuild -runFirstLaunch
+```
+
 Invoking `build_macos.sh` will do the following:
 * initialize & update JUCE submodules
 * Build the "Projucer" project manager
