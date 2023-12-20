@@ -92,5 +92,13 @@ Progress is saved after each trial is completed (i.e. whenever the 'next' button
 ### Analyzing test results
 Scripts in the **analysis** folder can be used to analyze test results.
 
-### Compiled version v3.2.2 (for ICASSP 2024 review)
-A compiled/built version (v3.2.2) is accessible via [this link](https://drive.google.com/drive/folders/1uW8JYcrLkr-_PBTn8PnhfMEFn35G1jyl?usp=sharing). It is compatible with macOSX 10.13 and later. To run the application, make sure to go to `Setting --> Privacy & Security --> Security` and give the necessary permission to this app. 
+### Compiled version v3.2.2
+A compiled/built version (v3.2.2) is accessible via [this link](https://drive.google.com/drive/folders/1uW8JYcrLkr-_PBTn8PnhfMEFn35G1jyl?usp=sharing). It is compatible with macOSX 10.13 and later. To run the application, make sure to go to `Setting --> Privacy & Security --> Security` and give the necessary permission to this app.
+
+This particular version was used for the listening tests described in the following publication:
+```
+Matteo Torcoli, Chih-Wei Wu, Sascha Dick, Phillip A. Williams, Mhd Modar Halimeh, William Wolcott, Emanuël A. P. Habets, 
+"ODAQ: Open Dataset of Audio Quality," 
+IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP), 2024.
+```
+For more details regarding ODAQ, please refer to [this repository](https://github.com/Fraunhofer-IIS/ODAQ/)
