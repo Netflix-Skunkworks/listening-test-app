@@ -97,8 +97,13 @@ A compiled/built version (v3.2.2) is accessible via [this link](https://drive.go
 
 This particular version was used for the listening tests described in the following publication:
 ```
-Matteo Torcoli, Chih-Wei Wu, Sascha Dick, Phillip A. Williams, Mhd Modar Halimeh, William Wolcott, Emanuël A. P. Habets, 
-"ODAQ: Open Dataset of Audio Quality," 
-IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP), 2024.
+@inproceedings{Torcoli2024ODAQ,
+author = {Torcoli, M. and Wu, C. W. and Dick, S. and Williams, P. A. and Halimeh, M. M. and Wolcott, W. and Habets, E. A. P.},
+year = {2024},
+month = {April},
+title = {{ODAQ}: Open Dataset of Audio Quality},
+address = {Seoul, Korea},
+booktitle={IEEE International Conference on Acoustics Speech and Signal Processing (ICASSP)}
+}
 ```
 For more details regarding ODAQ, please refer to [this repository](https://github.com/Fraunhofer-IIS/ODAQ/)
