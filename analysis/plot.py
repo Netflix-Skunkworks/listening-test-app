@@ -112,27 +112,12 @@ def plot_all_listeners(df_list, output_filename, ref_codec='reference', title='l
     conf_per_subject_codec = pandas.DataFrame(columns=summary_df.columns)
     for subject in df.index.levels[0]:
         subject_chart = df.loc[idx[[subject], :], :]
-        conf = []
-
-        # special-case code to compute correct error bars when the test results are sparse
-        if subject_chart.isnull().values.any():
-            for codec, scores in subject_chart.items():  # iteritems was deprecated since pandas 2.0.0
-                newScores = scores.dropna()  # newScores can be empty when some of the entries are incomplete, error out
-                if len(newScores) == 0:
-                    raise ValueError("No valid scores: please check result files for incomplete data entries.")
-                conf.append((statsmodels.stats.weightstats.DescrStatsW(newScores).tconfint_mean(alpha=0.05) - newScores.mean())[1])
-        # elif stimulus_chart.shape[0] == 1:
-        #     # only one listener, no need to run stat
-        #     conf = np.zeros(stimulus_chart.shape[1])
-        else:
-            conf = (statsmodels.stats.weightstats.DescrStatsW(subject_chart).tconfint_mean(alpha=0.05) - subject_chart.mean().values)[1]
-
+        conf = get_conf_from_dataframe(subject_chart, alpha_value=0.05)
         conf_per_subject_codec.loc[subject] = conf
 
     # Add Mean row to confidence & summary score dataframes
-    meanconf = statsmodels.stats.weightstats.DescrStatsW(df).tconfint_mean(alpha=0.05) - df.mean().values
-    conf_per_subject_codec.loc['mean'] = meanconf[1]
-    summary_df.loc['mean'] = df.mean()
+    conf_per_subject_codec.loc['mean'] = get_conf_from_dataframe(df, alpha_value=0.05)
+    summary_df.loc['mean'] = df.mean()  # df.mean() will ignore nan by default
 
     # Setup a chart with labels for each test stimulus on x-axis
     ax = create_xticks(ax, summary_df)
@@ -154,6 +139,34 @@ def plot_all_listeners(df_list, output_filename, ref_codec='reference', title='l
     fig.savefig(output_filename)
 
     return ax
+
+
+def get_conf_from_dataframe(chart, alpha_value=0.05):
+    """
+    This function computes confidence interval for each treatment (or codec) and ignores nan (missing data)
+    Parameters
+    ----------
+    chart: a dataframe object from pandas, typically structured as scores x treatment
+    alpha_value: significance level for the confidence interval, coverage is 1-alpha (from tconfint_mean)
+
+    Returns: list of confidence intervals; one value per treatment
+    -------
+    """
+    conf = []
+
+    # special-case code to compute correct error bars when the test results are sparse
+    if chart.isnull().values.any():
+        for codec, scores in chart.items():  # iteritems was deprecated since pandas 2.0.0
+            newScores = scores.dropna()  # newScores can be empty when some of the entries are incomplete
+            if len(newScores) == 0:
+                newScores = scores.fillna(0)  # this will lead to conf interval = 0
+                print("Results contain incomplete entries: ignore missing values for conf interval estimation")
+            conf.append(
+                (statsmodels.stats.weightstats.DescrStatsW(newScores).tconfint_mean(alpha=alpha_value) - newScores.mean())[1])  # index 1 is to take positive value only
+    else:
+        conf = (statsmodels.stats.weightstats.DescrStatsW(chart).tconfint_mean(
+            alpha=alpha_value) - chart.mean().values)[1]
+    return conf
 
 
 # diff-plot a single user
@@ -192,7 +205,7 @@ def plot_one_subject(df, output_filename, subject, ref_codec='reference'):
     return ax
 
 
-# plot all users
+# plot all items
 def plot_all(df_list, output_filename, ref_codec='reference', title='listening_test'):
     fig = matplotlib.pylab.figure()
     ax = fig.add_axes([0.1, 0.15, 0.8, 0.8])
@@ -225,26 +238,11 @@ def plot_all(df_list, output_filename, ref_codec='reference', title='listening_t
     conf_per_stimulus_codec = pandas.DataFrame(columns=summary_df.columns)
     for stimulus in df.index.levels[1]:
         stimulus_chart = df.loc[idx[:, [stimulus]], :]
-        conf = []
-
-        # special-case code to compute correct error bars when the test results are sparse
-        if stimulus_chart.isnull().values.any():
-            for codec, scores in stimulus_chart.items():  # iteritems was deprecated since pandas 2.0.0
-                newScores = scores.dropna()  # newScores can be empty when some of the entries are incomplete, error out
-                if len(newScores) == 0:
-                    raise ValueError("No valid scores: please check result files for incomplete data entries.")
-                conf.append((statsmodels.stats.weightstats.DescrStatsW(newScores).tconfint_mean(alpha=0.05) - newScores.mean())[1])
-        # elif stimulus_chart.shape[0] == 1:
-        #     # only one listener, no need to run stat
-        #     conf = np.zeros(stimulus_chart.shape[1])
-        else:
-            conf = (statsmodels.stats.weightstats.DescrStatsW(stimulus_chart).tconfint_mean(alpha=0.05) - stimulus_chart.mean().values)[1]
-
+        conf = get_conf_from_dataframe(stimulus_chart, alpha_value=0.05)
         conf_per_stimulus_codec.loc[stimulus] = conf
 
     # Add Mean row to confidence & summary score dataframes
-    meanconf = statsmodels.stats.weightstats.DescrStatsW(df).tconfint_mean(alpha=0.05) - df.mean().values
-    conf_per_stimulus_codec.loc['mean'] = meanconf[1]
+    conf_per_stimulus_codec.loc['mean'] = get_conf_from_dataframe(df, alpha_value=0.05)
     summary_df.loc['mean'] = df.mean()
 
     # Setup a chart with labels for each test stimulus on x-axis

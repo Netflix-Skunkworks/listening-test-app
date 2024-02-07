@@ -44,9 +44,8 @@ def plot_mushra_results(listeners_dict,
     all_listeners_filename = output_dir + "%s_all_listeners.png" % test_name
     plot_all_listeners(listeners_dict, all_listeners_filename, title=test_name)
 
-    if len(listeners_dict) > 1:
-        all_items_filename = output_dir + "%s_all_items.png" % test_name
-        plot_all(listeners_dict, all_items_filename, title=test_name)
+    all_items_filename = output_dir + "%s_all_items.png" % test_name
+    plot_all(listeners_dict, all_items_filename, title=test_name)
 
     if show_plots:
         matplotlib.pyplot.show()
