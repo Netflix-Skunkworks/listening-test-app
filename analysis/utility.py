@@ -3,6 +3,30 @@ import xml.etree.ElementTree as elementTree
 import pandas
 
 
+def longest_common_substring(s1, s2):
+    """Finds the longest common substring between s1 and s2."""
+    s1 = s1.replace('-', '_')
+    s2 = s2.replace('-', '_')
+    m = len(s1)
+    n = len(s2)
+    result = ""
+    length = 0
+    dp = [[0] * (n + 1) for _ in range(m + 1)]
+
+    for i in range(m + 1):
+        for j in range(n + 1):
+            if i == 0 or j == 0:
+                dp[i][j] = 0
+            elif s1[i - 1] == s2[j - 1]:
+                dp[i][j] = dp[i - 1][j - 1] + 1
+                if dp[i][j] > length:
+                    length = dp[i][j]
+                    result = s1[i - length:i]
+            else:
+                dp[i][j] = 0
+    return result
+
+
 def get_codec_name(file_name, trial_name):
     # check if the file name is valid
     if not file_name.endswith('.wav'):
@@ -10,7 +34,10 @@ def get_codec_name(file_name, trial_name):
     if not file_name.startswith(trial_name):
         print("--> File = %s: file name prefix is inconsistent with trial name %s" % (file_name, trial_name))
         # also support: <codec_or_system_name>.wav, but notify user of the inconsistency
-        codec_name = file_name.split(".wav")[0]
+        lcs = longest_common_substring(file_name, trial_name)
+        if lcs == "":
+            codec_name = file_name.split(".wav")[0]  # if trial and filename have nothing in common, take the filename
+        codec_name = file_name.split(".wav")[0][len(lcs)+1:]  # if there is a common substring, remove it from filename
     else:
         # naming convention: <trial_name>_<codec_or_system_name>.wav
         codec_name = file_name.split(".wav")[0][len(trial_name)+1:]
