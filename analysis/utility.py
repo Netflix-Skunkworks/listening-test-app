@@ -34,10 +34,18 @@ def get_codec_name(file_name, trial_name):
     if not file_name.startswith(trial_name):
         print("--> File = %s: file name prefix is inconsistent with trial name %s" % (file_name, trial_name))
         # also support: <codec_or_system_name>.wav, but notify user of the inconsistency
-        lcs = longest_common_substring(file_name, trial_name)
-        if lcs == "":
+
+        # remove the potential artifact prefix, e.g., LP_file_name
+        artifact_prefix = trial_name.split("_")[0] + "_"
+        new_trial_name = trial_name.replace(artifact_prefix, "")
+        # normalize strings from "-" to "_"
+        normalized_file_name = file_name.replace("-", "_")
+        normalized_trial_name = new_trial_name.replace("-", "_")
+
+        if normalized_file_name.startswith(normalized_trial_name):
+            codec_name = file_name.split(".wav")[0][len(normalized_trial_name)+1:]
+        else:
             codec_name = file_name.split(".wav")[0]  # if trial and filename have nothing in common, take the filename
-        codec_name = file_name.split(".wav")[0][len(lcs)+1:]  # if there is a common substring, remove it from filename
     else:
         # naming convention: <trial_name>_<codec_or_system_name>.wav
         codec_name = file_name.split(".wav")[0][len(trial_name)+1:]
