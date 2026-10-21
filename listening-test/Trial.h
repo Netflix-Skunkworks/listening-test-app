@@ -41,8 +41,8 @@ public:
 
     StringArray soundFiles;
     StringArray soundFilesNamesOnly;
-    File *videoFile;
-    Array<float> responses;
+    File videoFile;
+    Array<double> responses;
     Array<int> stimuliPlays;
     Array<String> comments;
     Array<int> filesOrder;

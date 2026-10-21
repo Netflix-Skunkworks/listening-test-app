@@ -4,6 +4,7 @@
 //    Copyright(C) 2017  Netflix, Inc.
 
 #include "TestLauncher.h"
+#include <assert.h>
 
 #define min(a, b) ((a)<(b)?(a):(b))
 #define max(a, b) ((a)>(b)?(a):(b))
@@ -28,15 +29,31 @@ TestLauncher::~TestLauncher() {
 
 bool TestLauncher::init(File testSettingsFile) {
     std::unique_ptr <XmlElement> testSettings(parseXML(testSettingsFile));
+    if (testSettings == nullptr) {
+        lastError = "Could not read the test settings in " + testSettingsFile.getFullPathName() +
+                    ".  Try re-running 'manage tests'.";
+        dbgOut(lastError);
+        return false;
+    }
 
     stimuliDirectory = testSettings->getStringAttribute("stimuliDirectory");
     stimCount = testSettings->getIntAttribute("stimuliCount");
-    testType = getTestTypeEnum(testSettings->getStringAttribute("testType"));
+
+    /* Validate before this is used as an index anywhere. */
+    String testTypeString = testSettings->getStringAttribute("testType");
+    testType = getTestTypeEnum(testTypeString);
+    if (!isKnownTestType(testType)) {
+        lastError = "'" + testTypeString + "' in " + testSettingsFile.getFileName() +
+                    " is not a test type I know about.  Try re-running 'manage tests'.";
+        dbgOut(lastError);
+        return false;
+    }
+
     String trialsPerSessionString = testSettings->getStringAttribute("trialsPerSession");
     if (!trialsPerSessionString.equalsIgnoreCase("all")) {
         trialsPerSession = trialsPerSessionString.getIntValue();
     }
-    dbgOut(String::formatted("%s test loaded", static_cast<const char *> (testTypes[testType].toUTF8())));
+    dbgOut(getTestTypeName(testType) + " test loaded");
     randomiseStimuli = true;
     if (testType == TEST_TYPE_MUSHRA_DEMO) {
         randomiseStimuli = false;
@@ -113,18 +130,24 @@ bool TestLauncher::goToTrial(int trialIndex) {
 
 // ============================================================================================
 bool TestLauncher::readTestSettings() {
-    if (stimuliDirectory.isEmpty())
+    if (stimuliDirectory.isEmpty()) {
+        /* Without this the caller sees a failure with no explanation, and
+           MainComponent, which decides on lastError alone, carried on and built
+           a test component over an empty trials array. */
+        lastError = "No stimuli directory is set for this test.  Try re-running 'manage tests'.";
+        dbgOut(lastError);
         return false;
+    }
 
-    File *stimDir = new File(stimuliDirectory);
-    if (!(stimDir->exists() && stimDir->isDirectory())) {
+    File stimDir(stimuliDirectory);
+    if (!(stimDir.exists() && stimDir.isDirectory())) {
         lastError = "Unable to find stimuli directory " + stimuliDirectory;
         return false;
     }
 
     /* get the child directories */
     Array <File> childDir;
-    int dirCount = stimDir->findChildFiles(childDir, File::findDirectories, true);
+    int dirCount = stimDir.findChildFiles(childDir, File::findDirectories, true);
     if (dirCount == 0) {
         lastError = "Unable to find subdirectories in " + stimuliDirectory;
         return false;
@@ -132,7 +155,7 @@ bool TestLauncher::readTestSettings() {
 
     childDir.sort();
 
-    dbgOut(String::formatted("Loading files for %s test", static_cast<const char *> (testTypes[testType].toUTF8())));
+    dbgOut("Loading files for " + getTestTypeName(testType) + " test");
 
     /* For BS-1116 testing, each stimuli (except for reference) in the stimuli directory is a trial */
     if (testType == TEST_TYPE_BS1116) {
@@ -206,8 +229,8 @@ bool TestLauncher::readTestSettings() {
             trials[t]->soundFiles.add(codedFiles[trialIndexLookup[t]].getFullPathName());
             trials[t]->filesOrder.add(0);
             trials[t]->filesOrder.add(1);
-            trials[t]->responses.add(5.0);
-            trials[t]->responses.add(5.0);
+            trials[t]->responses.add(BS1116_DEFAULT_SCORE);
+            trials[t]->responses.add(BS1116_DEFAULT_SCORE);
             trials[t]->comments.add(String());
             trials[t]->comments.add(String());
             trials[t]->stimuliPlays.add(0);
@@ -216,7 +239,6 @@ bool TestLauncher::readTestSettings() {
             trials[t]->responsesMoved.add(false);
             trials[t]->setStartTime();
             trials[t]->setStopTime();
-            trials[t]->videoFile = new File(String());
 
             if (randomiseStimuli) {
                 trials[t]->randomizeTrialOrder();
@@ -277,8 +299,8 @@ bool TestLauncher::readTestSettings() {
             trials[t]->soundFiles.add(secondFiles[trialIndexLookup[t]].getFullPathName());
             trials[t]->filesOrder.add(0);
             trials[t]->filesOrder.add(1);
-            trials[t]->responses.add(0);
-            trials[t]->responses.add(1);
+            trials[t]->responses.add(AB_DEFAULT_SCORE);
+            trials[t]->responses.add(AB_DEFAULT_SCORE);
             trials[t]->comments.add(String());
             trials[t]->comments.add(String());
             trials[t]->stimuliPlays.add(0);
@@ -287,10 +309,9 @@ bool TestLauncher::readTestSettings() {
             trials[t]->responsesMoved.add(false);
             trials[t]->setStartTime();
             trials[t]->setStopTime();
-            trials[t]->videoFile = new File(String());
 
             if (testType == TEST_TYPE_AVAB) {
-                *(trials[t]->videoFile) = videoFiles[trialIndexLookup[t]].getFullPathName();
+                trials[t]->videoFile = videoFiles[trialIndexLookup[t]];
             }
 
             if (randomiseStimuli) {
@@ -307,7 +328,6 @@ bool TestLauncher::readTestSettings() {
             trials.add(new Trial);
             trials[i]->setStartTime();
             trials[i]->setStopTime();
-            trials[i]->videoFile = new File(String());
 
             /* get stimuli files */
             Array <File> stimuliFiles;
@@ -346,12 +366,11 @@ bool TestLauncher::readTestSettings() {
                 trials[i]->filesOrder.add(j);
                 trials[i]->comments.add(String());
                 if (!((j == refIndex) && (testType == TEST_TYPE_MUSHRA_DEMO))) {
-                    trials[i]->responses.add(100);
+                    trials[i]->responses.add(MUSHRA_DEFAULT_SCORE);
                     trials[i]->stimuliPlays.add(0);
                     trials[i]->responsesMoved.add(false);
                 } else {
-                    dbgOut(String::formatted("Skipping %s for Demo mode",
-                                             static_cast<const char *> (stimuliFiles[j].getFileNameWithoutExtension().toUTF8())));
+                    dbgOut("Skipping " + stimuliFiles[j].getFileNameWithoutExtension() + " for Demo mode");
                 }
             }
 
@@ -370,8 +389,6 @@ bool TestLauncher::readTestSettings() {
 
     currentIndex = 0;
 
-    if (stimDir) delete (stimDir);
-
     return true;
 }
 
@@ -383,7 +400,15 @@ bool TestLauncher::loadResults(File &resultsFile) {
         return false;
     }
 
+    /* The root tag names the methodology.  Validate it before it is used as an
+       index into testTypes, which it is on every save. */
     testType = getTestTypeEnum(testResults->getTagName());
+    if (!isKnownTestType(testType)) {
+        lastError = "'" + testResults->getTagName() + "' in " + resultsFile.getFileName() +
+                    " is not a test type I know about; this may not be a listening test results file.";
+        dbgOut(lastError);
+        return false;
+    }
 
     XmlElement *testInfo(testResults->getChildByName("info"));
     if (testInfo == nullptr) {
@@ -392,7 +417,12 @@ bool TestLauncher::loadResults(File &resultsFile) {
         return false;
     }
 
-    testStartTime.fromISO8601(testInfo->getStringAttribute("startTime", String()));
+    Time loadedStartTime = Time::fromISO8601(testInfo->getStringAttribute("startTime", String()));
+    if (loadedStartTime.toMilliseconds() != 0) {
+        testStartTime = loadedStartTime;
+    } else {
+        dbgOut("Could not read startTime from " + resultsFile.getFileName() + "; using the current time instead");
+    }
 
     subjectID = testInfo->getStringAttribute("subjectName", String());
     if (subjectID.isEmpty()) {
@@ -502,12 +532,14 @@ bool TestLauncher::loadResults(File &resultsFile) {
 }
 
 bool TestLauncher::saveResults() {
+    String tempFileName = "temp_" + subjectID + ".xml";
+
     String resultFile;
     if (isTestComplete()) {
         String tmpString = testID + "_" + Time::getCurrentTime().formatted("%Y-%m-%d_%H%M%S_") + subjectID + ".xml";
         resultFile = File::addTrailingSeparator(stimuliDirectory) + tmpString.replaceCharacter(' ', '_');
     } else {
-        resultFile = File::addTrailingSeparator(stimuliDirectory) + "temp_" + subjectID + ".xml";
+        resultFile = File::addTrailingSeparator(stimuliDirectory) + tempFileName;
     }
 
     File fs(resultFile);
@@ -543,7 +575,7 @@ bool TestLauncher::saveResults() {
         }
     }
 
-    XmlElement testResults(testTypes[testType]);
+    XmlElement testResults(getTestTypeName(testType));
 
     XmlElement testInfo("info");
     testInfo.setAttribute("startTime", testStartTime.toISO8601(true));
@@ -574,8 +606,31 @@ bool TestLauncher::saveResults() {
 
     testResults.addChildElement(new XmlElement(trialsXml));
 
-    testResults.writeTo(fs);
+    if (!testResults.writeTo(fs)) {
+        lastError = "Unable to write results to " + fs.getFullPathName();
+        dbgOut(lastError);
+        return false;
+    }
 
+    /* The completed results are now on disk, so remove the in-progress file. */
+    if (isTestComplete()) {
+        Array<File> tempFiles;
+        tempFiles.add(File(File::addTrailingSeparator(stimuliDirectory) + tempFileName));
+        tempFiles.add(File::getSpecialLocation(File::userDocumentsDirectory)
+                              .getChildFile("ListeningTest")
+                              .getChildFile(tempFileName));
+
+        for (int i = 0; i < tempFiles.size(); i++) {
+            if (tempFiles[i].existsAsFile()) {
+                dbgOut("Removing in-progress results file:\t" + tempFiles[i].getFullPathName());
+                if (!tempFiles[i].deleteFile()) {
+                    dbgOut("Could not remove " + tempFiles[i].getFullPathName());
+                }
+            }
+        }
+    }
+
+    lastError.clear();
     return true;
 }
 
@@ -589,42 +644,73 @@ void TestLauncher::run() {
     // Get the channel count and validate consistency
     // First get sample count and use shortest input file as length for all
     for (int i = 0; i < getCurrentTrial()->soundFiles.size(); i++) {
-        /* Create input stream for the audio file */
-        FileInputStream *af = new FileInputStream(File(getCurrentTrial()->soundFiles[i]));
+        const String soundFile = getCurrentTrial()->soundFiles[i];
+
+        /* Create input stream for the audio file. */
+        std::unique_ptr <FileInputStream> af(new FileInputStream(File(soundFile)));
 
         if (af->failedToOpen()) {
-            lastError = String::formatted("Could not open file %s.",
-                                          getCurrentTrial()->soundFiles[i].toWideCharPointer());
+            lastError = "Could not open file " + soundFile;
             return;
         }
 
-        std::unique_ptr <AudioFormatReader> wavReader(waf.createReaderFor(af, false));
+        std::unique_ptr <AudioFormatReader> wavReader(waf.createReaderFor(af.release(), true));
+        if (wavReader == nullptr) {
+            lastError = "Unable to read " + soundFile + " as a wav file.";
+            return;
+        }
+
         samplesCountPerFile.add(wavReader->lengthInSamples);
 
         if (i == 0) {
-            inputChannels = wavReader->numChannels;
-        } else if (wavReader->numChannels != inputChannels) {
-            lastError = String::formatted("The number of audio channels in %s is %i; expected %i",
-                                          getCurrentTrial()->soundFiles[i].toWideCharPointer(),
-                                          inputChannels,
-                                          audioPlayer.getChannelCount());
+            inputChannels = (int) wavReader->numChannels;
+        } else if ((int) wavReader->numChannels != inputChannels) {
+            lastError = "The number of audio channels in " + soundFile + " is " +
+                        String(wavReader->numChannels) + "; expected " + String(inputChannels);
             return;
         }
     }
 
-    int64 maxSamplesCount = 0;
-    samplesCount = static_cast<unsigned int> (samplesCountPerFile[0]);
+    if (samplesCountPerFile.isEmpty()) {
+        lastError = "No stimuli files were found for trial " + getCurrentTrial()->testName;
+        return;
+    }
+
+    /* All stimuli in a trial are played back at a common length, so use the
+       shortest file.  Anything longer is truncated rather than being read
+       past its end, which would pad the tail of the shorter files with
+       silence and let a subject hear which stimulus ran out first. */
+    int64 minSamplesCount = samplesCountPerFile[0];
+    int64 longestSamplesCount = samplesCountPerFile[0];
     for (int i = 1; i < samplesCountPerFile.size(); i++) {
-        maxSamplesCount = min(maxSamplesCount, samplesCountPerFile[i]);
-        if (maxSamplesCount > (int64)(UINT_MAX)) {
-            lastError = String::formatted("Sorry, I cannot open %s because it has more than %n samples per channel",
-                                          getCurrentTrial()->soundFiles[i].toUTF8(), UINT_MAX);
-            return;
-        }
+        minSamplesCount = jmin(minSamplesCount, samplesCountPerFile[i]);
+        longestSamplesCount = jmax(longestSamplesCount, samplesCountPerFile[i]);
     }
 
-    if ((BigInteger) inputChannels > audioPlayer.getOutputChannels()) {
-        lastError = "The number of audio channels in stimuli files exceeds available device outputs.";
+    if (minSamplesCount <= 0) {
+        lastError = "One of the stimuli in " + getCurrentTrial()->testName + " contains no audio samples";
+        return;
+    }
+
+    if (minSamplesCount > (int64) UINT_MAX) {
+        lastError = "Sorry, I cannot load the stimuli for " + getCurrentTrial()->testName +
+                    " because they have more than " + String(UINT_MAX) + " samples per channel";
+        return;
+    }
+
+    if (longestSamplesCount != minSamplesCount) {
+        dbgOut("Stimuli lengths differ in " + getCurrentTrial()->testName + " (" + String(minSamplesCount) +
+               " to " + String(longestSamplesCount) + " samples); truncating all to " + String(minSamplesCount));
+    }
+
+    samplesCount = static_cast<unsigned int> (minSamplesCount);
+
+    /* NOTE: getOutputChannels() is a bitmask of the enabled channel indices */
+    const int availableOutputs = audioPlayer.getOutputChannelCount();
+    if (inputChannels > availableOutputs) {
+        lastError = "The stimuli in " + getCurrentTrial()->testName + " have " + String(inputChannels) +
+                    " channels, but the selected audio device only has " + String(availableOutputs) +
+                    " output channel(s) enabled.";
         return;
     }
 
@@ -637,28 +723,33 @@ void TestLauncher::run() {
         if (threadShouldExit())
             break;
 
+        const String soundFile = getCurrentTrial()->soundFiles[i];
+
         /* Create input stream for the audio file */
-        FileInputStream *af = new FileInputStream(getCurrentTrial()->soundFiles[i]);
+        std::unique_ptr <FileInputStream> af(new FileInputStream(File(soundFile)));
 
         if (af->failedToOpen()) {
-            lastError = String::formatted("Could not open file %s.",
-                                          getCurrentTrial()->soundFiles[i].toWideCharPointer());
+            lastError = "Could not open file " + soundFile;
             return;
         }
 
-        std::unique_ptr <AudioFormatReader> wavReader(waf.createReaderFor(af, false));
-        if (wavReader == NULL) {
-            lastError = "Unable to create reader for  " + getCurrentTrial()->soundFiles[i];
+        const File loadedFile = af->getFile();
+
+        std::unique_ptr <AudioFormatReader> wavReader(waf.createReaderFor(af.release(), true));
+        if (wavReader == nullptr) {
+            lastError = "Unable to create reader for " + soundFile;
             return;
         }
 
-        dbgOut("Loading file " + af->getFile().getFullPathName());
+        dbgOut("Loading file " + loadedFile.getFullPathName());
         audioPlayer.addAudioFromFile(wavReader.get(), inputChannels, samplesCount);
     }
 
-    if (getCurrentTrial()->videoFile->exists()) {
-        dbgOut("Loading video file " + getCurrentTrial()->videoFile->getFullPathName());
-        audioPlayer.setVideoFile(*getCurrentTrial()->videoFile);
+    if (getCurrentTrial()->videoFile.existsAsFile()) {
+        dbgOut("Loading video file " + getCurrentTrial()->videoFile.getFullPathName());
+        audioPlayer.setVideoFile(getCurrentTrial()->videoFile);
+    } else {
+        audioPlayer.clearVideoFile();
     }
 
     setProgress(1.0);
@@ -666,8 +757,17 @@ void TestLauncher::run() {
 }
 
 void TestLauncher::incrementPlayCount(int i) {
-    assert(i >= 0 && i < getCurrentTrial()->stimuliPlays.size());
-    getCurrentTrial()->stimuliPlays.set(i, getCurrentTrial()->stimuliPlays[i] + 1);
+    Trial *pTrial = getCurrentTrial();
+    if (pTrial == NULL) {
+        return;
+    }
+
+    if (i < 0 || i >= pTrial->stimuliPlays.size()) {
+        dbgOut("Ignoring play count for out-of-range stimulus " + String(i));
+        return;
+    }
+
+    pTrial->stimuliPlays.set(i, pTrial->stimuliPlays[i] + 1);
 }
 
 void TestLauncher::incrementReferencePlayCount() {

@@ -1,3 +1,5 @@
+# The JUCE submodule is held at tag 6.1.6, the last release of the 6.x line.
 [submodule "JUCE"]
 	path = JUCE
 	url = git@github.com:juce-framework/JUCE.git
+	tag = 6.1.6

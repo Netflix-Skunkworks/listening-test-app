@@ -4,3 +4,4 @@ JuceLibraryCode/*
 .idea
 analysis/*png
 *pyc
+analysis/.venv

@@ -13,6 +13,15 @@ AVABTestComponent::AVABTestComponent(AudioPlayer &aP, TestLauncher &tL) : ABTest
 
 void AVABTestComponent::resized() {
     ABTestComponent::resized();
+
+    // Use the inter-button gap for the help column beside the controls too.
+    const int buttonGap = stimuliButtons[1]->getX() - stimuliButtons[0]->getRight();
+    const int helpTextRight = stimuliButtons[0]->getX() - buttonGap;
+    const int helpTextWidth = jmax(buttonLabel.getWidth(), commentsLabel.getWidth(), headerLabel.getWidth());
+    const int helpTextLeft = jmax(0, helpTextRight - helpTextWidth);
+    for (auto* label : {&buttonLabel, &commentsLabel, &headerLabel}) {
+        label->setTopLeftPosition(helpTextLeft, label->getY());
+    }
     
     // Move all test controls to the bottom to accommodate the video player
     

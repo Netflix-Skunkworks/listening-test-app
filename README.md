@@ -85,6 +85,8 @@ Click **Finish** after adding your test.  The test configuration will be saved i
 
 ### Running tests
 
+The application fills the available desktop area and can be minimized, but cannot be resized or moved. Restoring it returns it to its maximized size. Press **Cmd-Q** on macOS or **Alt-F4** on Windows to quit.
+
 Click **Start Test** to start a new test.  Consult the relevant test specification for details on different test methodologies.
 
 Progress is saved after each trial is completed (i.e. whenever the 'next' button is pressed).  A subject may exit the application at any time, and click **Load Test** to continue, but locating and opening their temporary test file, which is stored in the base Stimuli directory.

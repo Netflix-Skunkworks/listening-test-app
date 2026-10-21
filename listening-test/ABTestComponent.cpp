@@ -7,6 +7,9 @@
 
 
 ABTestComponent::ABTestComponent(AudioPlayer &aP, TestLauncher &tL) : BaseTestComponent(aP, tL) {
+    // A/B tests have no reference stimulus (including the video subclass).
+    referenceButton.clearShortcuts();
+
     addAndMakeVisible(&nextButton);
     nextButton.setButtonText("Next >");
     nextButton.addListener(this);
@@ -159,11 +162,9 @@ bool ABTestComponent::saveResponses() {
     }
 
     Trial *pTrial = testLauncher.getCurrentTrial();
-    pTrial->responses.set(0, 0);
-    pTrial->responses.set(1, 0);
-    pTrial->responses.set(preferenceSlider.getValue(), 1);
-    pTrial->stimuliPlays.set(0, testLauncher.getPlayCount(0));
-    pTrial->stimuliPlays.set(1, testLauncher.getPlayCount(1));
+    pTrial->responses.set(0, AB_DEFAULT_SCORE);
+    pTrial->responses.set(1, AB_DEFAULT_SCORE);
+    pTrial->responses.set((int) preferenceSlider.getValue(), 1);
 
     for (int i = 0; i < pTrial->comments.size(); i++) {
         if (!commentBoxes[i]->isEmpty()) {
@@ -178,14 +179,14 @@ void ABTestComponent::clearResponses() {
     Trial *pTrial = testLauncher.getCurrentTrial();
 
     if (pTrial != NULL) {
-        pTrial->responses.set(0, 0);
-        pTrial->responses.set(1, 0);
+        pTrial->responses.set(0, AB_DEFAULT_SCORE);
+        pTrial->responses.set(1, AB_DEFAULT_SCORE);
         pTrial->responsesMoved.set(0, false);
         pTrial->responsesMoved.set(1, false);
+        pTrial->comments[0].clear();
+        pTrial->comments[1].clear();
     }
 
-    pTrial->comments[0].clear();
-    pTrial->comments[1].clear();
     commentBoxes[0]->clear();
     commentBoxes[1]->clear();
 

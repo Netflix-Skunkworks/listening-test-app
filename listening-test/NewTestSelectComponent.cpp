@@ -110,13 +110,41 @@ bool NewTestSelectComponent::populateComboBoxWithTestNames() {
     if (xmlFiles.size() == 0)
         return false;
 
+    /* Keep the file that goes with each item.  File::findChildFiles promises no
+       particular order, so an index into a fresh listing of this directory need
+       not name the same test. */
+    testSpecFiles.clear();
     testSelectComboBox.clear();
+
     for (int i = 0; i < xmlFiles.size(); i++) {
         std::unique_ptr <XmlElement> xml(parseXML(xmlFiles[i]));
-        testSelectComboBox.addItem(xml->getStringAttribute("name"), i + 1);
+        if (xml == nullptr) {
+            continue;   // unreadable spec; 'manage tests' reports these
+        }
+
+        String testName = xml->getStringAttribute("name");
+        if (testName.isEmpty()) {
+            testName = xmlFiles[i].getFileNameWithoutExtension();
+        }
+
+        testSpecFiles.add(xmlFiles[i]);
+        testSelectComboBox.addItem(testName, testSpecFiles.size());
     }
+
+    if (testSpecFiles.isEmpty()) {
+        return false;
+    }
+
     testSelectComboBox.setSelectedId(1, sendNotificationAsync);
 
     return true;
 
+}
+
+File NewTestSelectComponent::getSelectedTestFile() {
+    const int index = testSelectComboBox.getSelectedItemIndex();
+    if (index < 0 || index >= testSpecFiles.size()) {
+        return File();
+    }
+    return testSpecFiles[index];
 }

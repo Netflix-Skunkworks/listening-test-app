@@ -12,6 +12,10 @@
 const int SLIDER_MAXVALUE = 100;
 const int TIMER_CALLBACK_INTERVAL_MS = 100;
 
+/* Shortest playback loop the subject is allowed to set, in seconds.  ITU-R
+   BS.1534 (MUSHRA) puts this at 500ms.  */
+const double MINIMUM_LOOP_LENGTH_SECONDS = 0.5;
+
 #define    activeButtonColour        Colours::hotpink
 
 #define referenceButtonColour    Colours::darkgreen

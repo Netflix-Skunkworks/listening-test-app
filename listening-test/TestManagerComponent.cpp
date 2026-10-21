@@ -5,6 +5,8 @@
 
 #include "TestManagerComponent.h"
 #include "guisettings.h"
+#include <assert.h>
+
 
 const int border = 20;
 
@@ -78,13 +80,13 @@ String TestManagerComponent::TestManagerListBox::getStringAttributeForCell(int r
 }
 
 bool TestManagerComponent::TestManagerListBox::setStringAttributeForCell(int row, ColumnNames col, String newStr) {
-    String rowDataString = tableData->getChildElement(row)->toString();
-    if (tableData->getChildElement(row)) {
-        tableData->getChildElement(row)->setAttribute(getAttributeNameForColumnId(col), newStr);
-        return true;
-    } else {
+    XmlElement *rowData = tableData->getChildElement(row);
+    if (rowData == nullptr) {
         return false;
     }
+
+    rowData->setAttribute(getAttributeNameForColumnId(col), newStr);
+    return true;
 }
 
 TestManagerComponent::TestManagerListBox::TestManagerListBox() :
@@ -134,11 +136,25 @@ void TestManagerComponent::TestManagerListBox::clearTestSpecsTable() {
 }
 
 void TestManagerComponent::TestManagerListBox::addTestSpecsToTable(Array <File> xmlFiles) {
-    rowsCount += xmlFiles.size();
+    StringArray unreadable;
+
     for (int i = 0; i < xmlFiles.size(); i++) {
-        tableData->addChildElement(parseXML(xmlFiles[i]).release());
+        std::unique_ptr <XmlElement> spec(parseXML(xmlFiles[i]));
+        if (spec == nullptr) {
+            unreadable.add(xmlFiles[i].getFileName());
+            continue;
+        }
+        tableData->addChildElement(spec.release());
     }
+
+    rowsCount = tableData->getNumChildElements();
     updateContent();
+
+    if (!unreadable.isEmpty()) {
+        AlertWindow::showMessageBox(AlertWindow::WarningIcon, "Could not read test settings",
+                                    "These files could not be read and are not listed:\n" +
+                                    unreadable.joinIntoString("\n"), "OK", this);
+    }
 }
 
 
@@ -229,14 +245,32 @@ void TestManagerComponent::TestManagerListBox::addTest() {
 
 void TestManagerComponent::TestManagerListBox::deleteTest() {
     auto rows = getSelectedRows();
-    assert(rows.size() == 1);  // multiple row selection & deletion not supported!
+    if (rows.size() != 1) {
+        AlertWindow::showMessageBox(AlertWindow::InfoIcon, "Select a test",
+                                    rows.size() == 0 ? "Select the test you want to delete first."
+                                                     : "Only one test can be deleted at a time.",
+                                    "OK", this);
+        return;
+    }
 
-    File f = workingDirectory.getChildFile(getRowData(rows[0])->getStringAttribute("name") + "-testspec.xml");
+    XmlElement *rowData = getRowData(rows[0]);
+    if (rowData == nullptr) {
+        return;
+    }
 
-    f.deleteFile();
+    const String testName = rowData->getStringAttribute("name");
+    if (testName.isNotEmpty()) {
+        File f = workingDirectory.getChildFile(testName + "-testspec.xml");
+        if (f.existsAsFile() && !f.deleteFile()) {
+            AlertWindow::showMessageBox(AlertWindow::WarningIcon, "Could not delete test",
+                                        "Unable to delete " + f.getFullPathName(), "OK", this);
+            return;
+        }
+    }
 
-    tableData->removeChildElement(getRowData(rows[0]), true);
-    rowsCount--;
+    tableData->removeChildElement(rowData, true);
+    rowsCount = tableData->getNumChildElements();
+    deselectAllRows();
     updateContent();
 }
 

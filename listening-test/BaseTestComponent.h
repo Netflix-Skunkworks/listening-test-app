@@ -29,6 +29,8 @@ public:
 
     int getCurrentButton() { return currentButton; }
 
+    void selectDefaultStimulus();
+
     void clearStartPlayRequest() { startPlayback = false; }
 
     void clearToggleRequest() { togglePlayback = false; }
@@ -61,6 +63,8 @@ protected:
 
     void handleChangeTrialRequest(int newTrialIndex);
 
+    bool isResultSavePending() const { return resultSavePending; }
+
     int stimCount;
     int currentButton;
 
@@ -82,6 +86,8 @@ protected:
     bool togglePlayback;
     bool resetPlayback;
     bool testFinished;
+    bool resultSavePending;
+    bool continueAfterSave;
 
     const String stimButtonShortcuts[12] = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "="};
 

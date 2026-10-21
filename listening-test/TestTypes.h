@@ -27,7 +27,20 @@ const String testTypes[] = {
         "AudioVideo_AB_Forced_Choice"
 };// "Casual Listening"};
 
-const testEnum getTestTypeEnum(String testTypeString);
+const double MUSHRA_DEFAULT_SCORE = 100.0;   // top of the 0-100 scale
+const double BS1116_DEFAULT_SCORE = 5.0;     // 'imperceptible' on the 1.0-5.0 scale
+const double AB_DEFAULT_SCORE = 0.0;         // no preference expressed yet
+
+/* Returns NUMBER_OF_TEST_TYPES for a string that names no known test, so every
+   caller must check the result before using it as an index. */
+testEnum getTestTypeEnum(String testTypeString);
+
+bool isKnownTestType(testEnum testType);
+
+/* Bounds-checked name lookup.  testTypes[testType] reads off the end of the
+   array when the test type came from an unrecognised settings file or results
+   tag, which is exactly the case the name is wanted for in error messages. */
+String getTestTypeName(testEnum testType);
 
 const File workingDirectory(
         File::getSpecialLocation(File::userDocumentsDirectory).getFullPathName() + File::getSeparatorString() +
