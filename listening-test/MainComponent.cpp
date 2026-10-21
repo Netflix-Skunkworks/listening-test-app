@@ -25,10 +25,10 @@ const String hotkeysText =
 "               space : pause/play\n"
 "                   ` : play reference\n"
 "                 1-9 : play hidden conditions\n"
-"            up-arrow : increase score 1 (MUSHRA) 0.1 (BS.1116) point\n"
-"          down-arrow : decrease score 1 point\n"
-"             page-up : increase score 20 (MUSHRA) or 1 (BS.1116)\n"
-"           page-down : decrease score 20 (MUSHRA) or 1 (BS.1116)\n"
+"            up-arrow : increase score  1 (MUSHRA) or 0.1 (BS.1116)\n"
+"          down-arrow : decrease score  1 (MUSHRA) or 0.1 (BS.1116)\n"
+"             page-up : increase score 20 (MUSHRA) or 1   (BS.1116)\n"
+"           page-down : decrease score 20 (MUSHRA) or 1   (BS.1116)\n"
 "                   x : set loop start to cursor\n"
 "                   c : set loop end to cursor\n"
 "           shift + x : clear loop start\n"
@@ -204,8 +204,15 @@ void MainComponent::resized() {
         testComponent->setBounds(childComponentBorders);
     }
     
-    deviceSelector.setBounds(childComponentBorders);
-    hotkeyTextLabel.setBounds(childComponentBorders);
+    // The selector determines its own height from the available audio options.
+    deviceSelector.setSize(jmin(700, childComponentBorders.getWidth()), deviceSelector.getHeight());
+    deviceSelector.setCentrePosition(childComponentBorders.getCentre());
+
+    // Center the text block while preserving the aligned shortcut columns.
+    setupLabel(hotkeyTextLabel, 0, 0);
+    hotkeyTextLabel.setBounds(childComponentBorders.withSizeKeepingCentre(
+            jmin(hotkeyTextLabel.getWidth(), childComponentBorders.getWidth()),
+            jmin(hotkeyTextLabel.getHeight(), childComponentBorders.getHeight())));
     testManagerComponent.setBounds(childComponentBorders);
     newTestSelectComponent.setBounds(childComponentBorders);
     surveyComponent.setBounds(childComponentBorders);
@@ -239,11 +246,23 @@ void MainComponent::resized() {
 
 }
 
+void MainComponent::childBoundsChanged(Component *child) {
+    if (child == &deviceSelector) {
+        // Audio device changes can resize the selector independently of the window.
+        const auto contentArea = testBorder.getBounds().reduced(borderOffset).withTrimmedTop(borderOffset);
+        deviceSelector.setCentrePosition(contentArea.getCentre());
+    }
+}
+
 void MainComponent::handlePlaybackSliderChange() {
     float minPlaybackLoopLength = 0;
-    if (testLauncher.getLengthInSamples() > 0) {
-        minPlaybackLoopLength =
-                SLIDER_MAXVALUE * 24000.0 / testLauncher.getLengthInSamples(); // 500ms according to MUSHRA spec
+    const int64 lengthInSamples = testLauncher.getLengthInSamples();
+    const double sampleRate = audioPlayer.getSampleRate();
+
+    if (lengthInSamples > 0 && sampleRate > 0.0) {
+        const double minLoopSamples = MINIMUM_LOOP_LENGTH_SECONDS * sampleRate;
+        minPlaybackLoopLength = (float) jmin(SLIDER_MAXVALUE * minLoopSamples / (double) lengthInSamples,
+                                             (double) SLIDER_MAXVALUE);
     }
     if (lockLoop) {
         minPlaybackLoopLength = playbackSliderMax - playbackSliderMin;
@@ -344,12 +363,14 @@ void MainComponent::saveAudioDeviceSettings() {
     }
 
     audioPlayer.resetCurrentDevice(audioDeviceSettingsFile);
-    if ((audioPlayer.getOutputChannels() < testLauncher.getInputChannels()) && testLauncher.getInputChannels() != 0) {
+    const int requiredChannels = testLauncher.getInputChannels();
+    const int availableChannels = audioPlayer.getOutputChannelCount();
+    if (requiredChannels != 0 && availableChannels < requiredChannels) {
         AlertWindow::showMessageBox(AlertWindow::WarningIcon, "Error occurred",
                                     "Current test requires a device with at least " +
-                                    String(testLauncher.getInputChannels()) +
-                                    " ouptut channels; the one you selected only has " +
-                                    audioPlayer.getOutputChannels().toString(10), "OK", this);
+                                    String(requiredChannels) +
+                                    " output channels; the one you selected only has " +
+                                    String(availableChannels), "OK", this);
     }
 
 }
@@ -385,6 +406,7 @@ void MainComponent::setupChildTestComponent() {
     testComponent->addChangeListener(this);
     testComponent->addKeyListener(this);
     testComponent->createButtons();
+    testComponent->selectDefaultStimulus();
     testComponent->setBounds(testBorder.getX() + borderOffset,
                              testBorder.getY() +
                              borderOffset * 2, // extra space to allow for the text title in the border
@@ -425,6 +447,19 @@ void MainComponent::runContinueTestSelector() {
 }
 
 bool MainComponent::keyPressed(const KeyPress &key, Component *c) {
+   #if JUCE_MAC
+    const bool quitRequested = key == KeyPress('Q', ModifierKeys::commandModifier, 0);
+   #elif JUCE_WINDOWS
+    const bool quitRequested = key == KeyPress(KeyPress::F4Key, ModifierKeys::altModifier, 0);
+   #else
+    const bool quitRequested = false;
+   #endif
+
+    if (quitRequested) {
+        JUCEApplication::getInstance()->systemRequestedQuit();
+        return true;
+    }
+
     if (key.isKeyCode(key.spaceKey)) {
         togglePlayback();
     } else if (key.isKeyCode(key.rightKey)) {
@@ -455,15 +490,18 @@ bool MainComponent::keyPressed(const KeyPress &key, Component *c) {
 }
 
 void MainComponent::loadNewTest(NewTestSelectComponent &newTestSelectComponent) {
-    Array <File> settingsFiles;
-    
     audioPlayer.stop();
 
-    workingDirectory.findChildFiles(settingsFiles, File::findFiles, false, "*-testspec.xml");
+    const File settingsFile = newTestSelectComponent.getSelectedTestFile();
+    if (settingsFile == File()) {
+        AlertWindow::showMessageBox(AlertWindow::WarningIcon, "Error occurred",
+                                    "No test is selected.  Please choose a test and try again.", "OK", this);
+        return;
+    }
 
     testLauncher.setSubjectID(newTestSelectComponent.getSubjectID());
     testLauncher.setTestID(newTestSelectComponent.getTestID());
-    testLauncher.init(settingsFiles[newTestSelectComponent.getTestIdx()]);
+    testLauncher.init(settingsFile);
 
 
     /* check for errors */

@@ -11,13 +11,21 @@ BaseTestComponent::BaseTestComponent(AudioPlayer &aP, TestLauncher &tL) :
         startPlayback(false),
         togglePlayback(false),
         resetPlayback(false),
-        testFinished(false) {
+        testFinished(false),
+        resultSavePending(false),
+        continueAfterSave(false) {
     addAndMakeVisible(&referenceButton);
     referenceButton.setButtonText("Reference");
     referenceButton.setColour(TextButton::buttonColourId, referenceButtonColour);
     referenceButton.setColour(TextButton::buttonOnColourId, activeButtonColour);
     referenceButton.setClickingTogglesState(true);
     referenceButton.addShortcut(KeyPress::createFromDescription("`"));
+   #if JUCE_WINDOWS
+    // Shortcuts are matched with GetAsyncKeyState, which takes a virtual-key
+    // code. The character '`' is not that code; the key left of 1 is VK_OEM_3
+    // (0xC0). JUCE translates '-' and '=', but not backtick.
+    referenceButton.addShortcut(KeyPress(0xC0));
+   #endif
     referenceButton.addListener(this);
     referenceButton.setColour(ComboBox::outlineColourId, juce::Colour(0.0f, 0.0f, 0.0f, 0.0f));
 }
@@ -76,6 +84,7 @@ void BaseTestComponent::selectStimulus(int ind) {
             ratingSliders[ind]->setEnabled(true);
             stimuliButtons[ind]->setToggleState(true, dontSendNotification);
             audioPlayer.switchStimulus(testLauncher.getCurrentTrial()->filesOrder[i]);
+            testLauncher.incrementPlayCount(i);
             testLauncher.dbgOut("playing stimulus " + String(i) + " \t" +
                                 testLauncher.getCurrentTrial()->soundFiles[testLauncher.getCurrentTrial()->filesOrder[i]]);
 
@@ -83,6 +92,19 @@ void BaseTestComponent::selectStimulus(int ind) {
             ratingSliders[i]->setEnabled(false);
             stimuliButtons[i]->setToggleState(false, dontSendNotification);
         }
+    }
+}
+
+void BaseTestComponent::selectDefaultStimulus() {
+    const auto testType = testLauncher.getTestType();
+    if (testType == TEST_TYPE_AB || testType == TEST_TYPE_AVAB)
+        return;
+
+    currentButton = 0;
+    selectStimulus(-1);
+    for (auto* slider : ratingSliders) {
+        slider->setAlpha(SLIDER_DISABLED_ALPHA);
+        slider->setTextBoxIsEditable(false);
     }
 }
 
@@ -111,8 +133,12 @@ void BaseTestComponent::buttonClicked(Button *b) {
         }
     } else if (b == &nextButton) {
         audioPlayer.pause();
-        if (saveResponses()) {
+        if (resultSavePending || saveResponses()) {
             handleChangeTrialRequest(testLauncher.getCurrentTrialIndex() + 1);
+        }
+
+        if (resultSavePending) {
+            return;
         }
 
         if (testLauncher.getCurrentTrialIndex() == testLauncher.getTrialsCount() - 1) {
@@ -126,22 +152,34 @@ void BaseTestComponent::buttonClicked(Button *b) {
 
 
 void BaseTestComponent::handleChangeTrialRequest(int newTrialIndex) {
-    /* deselect all stimuli */
-    selectStimulus(-1);
+    bool shouldContinue = continueAfterSave;
+    if (!resultSavePending) {
+        /* deselect all stimuli and stop current playback */
+        selectStimulus(-1);
+        audioPlayer.stop();
+        testLauncher.getCurrentTrial()->setStopTime();
 
-    /* stop current playback */
-    audioPlayer.stop();
-    testLauncher.getCurrentTrial()->setStopTime();
-
-    /* Load audio data and go to the next test */
-    bool shouldContinue = testLauncher.goToTrial(newTrialIndex);
-    if (testLauncher.lastError.isNotEmpty()) {
-        AlertWindow::showMessageBoxAsync(AlertWindow::WarningIcon, "Error", testLauncher.lastError, "OK", this);
-        return;
+        /* Load audio data and go to the next test. A failed save must retry
+           this same transition, rather than advancing another trial. */
+        shouldContinue = testLauncher.goToTrial(newTrialIndex);
+        if (testLauncher.lastError.isNotEmpty()) {
+            AlertWindow::showMessageBoxAsync(AlertWindow::WarningIcon, "Error", testLauncher.lastError, "OK", this);
+            return;
+        }
     }
 
     /* save results */
-    testLauncher.saveResults();
+    if (!testLauncher.saveResults()) {
+        resultSavePending = true;
+        continueAfterSave = shouldContinue;
+        nextButton.setButtonText("Retry Save");
+        AlertWindow::showMessageBoxAsync(MessageBoxIconType::WarningIcon, "Could not save results",
+                                         testLauncher.lastError + "\n\nPress Retry Save to try again.");
+        return;
+    }
+    resultSavePending = false;
+    if (testLauncher.getTestType() == TEST_TYPE_MUSHRA_DEMO)
+        nextButton.setButtonText("Next >");
 
     /* save results if the session is complete */
     if (!shouldContinue) {
@@ -158,6 +196,9 @@ void BaseTestComponent::handleChangeTrialRequest(int newTrialIndex) {
 
     /* set the sliders to default */
     clearResponses();
+    // Restarting the audio device clears its selection, so select after start().
+    if (shouldContinue)
+        selectDefaultStimulus();
     sendChangeMessage();
 }
 

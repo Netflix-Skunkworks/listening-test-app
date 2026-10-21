@@ -4,6 +4,7 @@
 //    Copyright(C) 2017  Netflix, Inc.
 
 #include "DemoComponent.h"
+#include <assert.h>
 
 //==============================================================================
 DemoComponent::DemoComponent(AudioPlayer &aP, TestLauncher &tL) : BaseTestComponent(aP, tL),
@@ -101,6 +102,16 @@ void DemoComponent::resized() {
 }
 
 void DemoComponent::buttonClicked(Button *b) {
+    if (isResultSavePending() && (b == &nextButton || b == &prevButton)) {
+        handleChangeTrialRequest(testLauncher.getCurrentTrialIndex());
+        if (!isResultSavePending()) {
+            prevButton.setAlpha(testLauncher.getCurrentTrialIndex() == 0 ? 0.5f : 1.0f);
+            nextButton.setAlpha(testLauncher.getCurrentTrialIndex() == testLauncher.getTrialsCount() - 1
+                                    ? 0.5f : 1.0f);
+        }
+        return;
+    }
+
     if (b == &nextButton) {
         audioPlayer.pause();
         if (testLauncher.getCurrentTrialIndex() != testLauncher.getTrialsCount() - 1) {
@@ -163,8 +174,7 @@ void DemoComponent::buttonClicked(Button *b) {
 bool DemoComponent::saveResponses() {
     Trial *pTrial = testLauncher.getCurrentTrial();
     assert(pTrial->stimuliPlays.size() == pTrial->responses.size());
-    for (int i = 0; i < pTrial->stimuliPlays.size(); i++) {
-        pTrial->stimuliPlays.set(i, testLauncher.getPlayCount(i));
+    for (int i = 0; i < pTrial->responses.size(); i++) {
         pTrial->responses.set(i, int(ratingSliders[i]->getValue()));
     }
     return true;
@@ -179,7 +189,7 @@ void DemoComponent::clearResponses() {
             ratingSliders[i]->setColour(Slider::ColourIds::thumbColourId, Colours::grey);
             ratingSliders[i]->setAlpha(SLIDER_DISABLED_ALPHA);
 
-            pTrial->responses.set(i, 100);
+            pTrial->responses.set(i, MUSHRA_DEFAULT_SCORE);
             pTrial->responsesMoved.set(i, false);
         }
         for (int i = 0; i < stimuliButtons.size(); i++) {

@@ -3,6 +3,8 @@
 //    Copyright(C) 2017  Netflix, Inc.
 
 #include "Trial.h"
+#include <assert.h>
+#include <cmath>
 
 // Seed a global C++11 Mersenne Twister random number generator
 std::random_device g_seed;
@@ -39,15 +41,15 @@ void randomizeArrayOrder(Array<int> &anArray) {
 
 
 bool Trial::loadResults(XmlElement &trialXml, String &stimDirName) {
-    File *stimDir = new File(stimDirName);
-    if (!stimDir->isDirectory()) {
+    File stimDir(stimDirName);
+    if (!stimDir.isDirectory()) {
         return false;
     }
 
     testName = trialXml.getStringAttribute("trialName", String());
     if (testName == String()) return false;
 
-    File trialDir = stimDir->getChildFile(testName);
+    File trialDir = stimDir.getChildFile(testName);
     if (!trialDir.isDirectory()) {
         return false;
     }
@@ -73,10 +75,10 @@ bool Trial::loadResults(XmlElement &trialXml, String &stimDirName) {
         // This code assumes that the video file is the last element in the list
         assert(trialXml.getChildElement(numSoundFiles - 1) == trialXml.getChildByName("videoFile"));
         numSoundFiles--;
-        videoFile = new File(
-                trialDir.getChildFile(trialXml.getChildByName("videoFile")->getStringAttribute("fileName", String())));
+        videoFile = trialDir.getChildFile(
+                trialXml.getChildByName("videoFile")->getStringAttribute("fileName", String()));
     } else {
-        videoFile = new File(String());
+        videoFile = File();
     }
 
     for (int i = 0; i < numSoundFiles; i++) {
@@ -119,19 +121,23 @@ void Trial::saveResults(XmlElement *parentXml) {
         int lastIndex = tmp.lastIndexOf(File::getSeparatorString());
         tmp = tmp.substring(lastIndex + 1);
 
+        /* The finest slider step in any of the tests is 0.1, so round to three
+           decimals to keep binary floating-point noise out of the results file. */
+        double score = std::round(responses[i] * 1000.0) / 1000.0;
+
         XmlElement fileInfo("testFile");
         fileInfo.setAttribute("fileName", tmp);
         fileInfo.setAttribute("plays", stimuliPlays[i]);
-        fileInfo.setAttribute("score", responses[i]);
+        fileInfo.setAttribute("score", score);
         if (comments[i].isNotEmpty()) {
             fileInfo.setAttribute("comment", comments[i]);
         }
         resultsXml.addChildElement(new XmlElement(fileInfo));
     }
 
-    if (videoFile->exists()) {
+    if (videoFile.existsAsFile()) {
         XmlElement videoFileXml("videoFile");
-        videoFileXml.setAttribute("fileName", videoFile->getFileName());
+        videoFileXml.setAttribute("fileName", videoFile.getFileName());
         resultsXml.addChildElement(new XmlElement(videoFileXml));
     }
 

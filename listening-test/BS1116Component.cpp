@@ -4,6 +4,7 @@
 
 #include "BS1116Component.h"
 #include "CommentBox.h"
+#include <assert.h>
 
 //==============================================================================
 BS1116Component::BS1116Component(AudioPlayer &aP, TestLauncher &tL) : BaseTestComponent(aP, tL) {
@@ -126,8 +127,7 @@ bool BS1116Component::saveResponses() {
     Trial *pTrial = testLauncher.getCurrentTrial();
     assert(pTrial->stimuliPlays.size() == ratingSliders.size());
     assert(pTrial->stimuliPlays.size() == pTrial->responses.size());
-    for (int i = 0; i < pTrial->stimuliPlays.size(); i++) {
-        pTrial->stimuliPlays.set(i, testLauncher.getPlayCount(i));
+    for (int i = 0; i < pTrial->responses.size(); i++) {
         pTrial->responses.set(i, ratingSliders[i]->getValue());
         if (ratingSliders[i]->getValue() == 5.0)
             count5++;
@@ -154,8 +154,7 @@ void BS1116Component::clearResponses() {
             ratingSliders[i]->setValue(pTrial->responses[i], dontSendNotification);
             ratingSliders[i]->setColour(Slider::ColourIds::thumbColourId, Colours::grey);
             ratingSliders[i]->setAlpha(SLIDER_DISABLED_ALPHA);
-
-            pTrial->responses.set(i, 100);
+            pTrial->responses.set(i, BS1116_DEFAULT_SCORE);
             pTrial->responsesMoved.set(i, false);
             
             pTrial->comments[i].clear();

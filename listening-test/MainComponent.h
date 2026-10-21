@@ -47,6 +47,8 @@ public:
 
 
 private:
+    void childBoundsChanged(Component *child) override;
+
     void saveAudioDeviceSettings();
 
     void setupChildTestComponent();

@@ -5,6 +5,7 @@
 
 #include "MushraComponent.h"
 #include "CommentBox.h"
+#include <assert.h>
 
 //==============================================================================
 MushraComponent::MushraComponent(AudioPlayer &aP, TestLauncher &tL) : BaseTestComponent(aP, tL) {
@@ -101,11 +102,16 @@ void MushraComponent::resized() {
     }
 
     float hscale = getHeight() / (float) DEFAULT_HEIGHT;
-    headerLabel.setFont(Font(18 * min(wscale, hscale), Font::bold));
     headerLabel.setBounds(margin,
                           stimuliButtons[0]->getY(),
                           getWidth() - margin,
                           ratingLabels[0]->getY() - stimuliButtons[0]->getY());
+
+    // The header has three lines, but its frame does not grow with the window.
+    // Leave enough vertical space for every line after the label's padding.
+    const auto textArea = headerLabel.getBorderSize().subtractedFrom(headerLabel.getLocalBounds());
+    const float fittingFontHeight = (float) (textArea.getHeight() / 3);
+    headerLabel.setFont(Font(jmax(1.0f, jmin(18 * min(wscale, hscale), fittingFontHeight)), Font::bold));
 
     BorderSize<int> headerLabelBorder = headerLabel.getBorderSize();
     headerLine.clear();
@@ -142,8 +148,7 @@ bool MushraComponent::saveResponses() {
     Trial *pTrial = testLauncher.getCurrentTrial();
     assert(pTrial->stimuliPlays.size() == ratingSliders.size());
     assert(pTrial->stimuliPlays.size() == pTrial->responses.size());
-    for (int i = 0; i < pTrial->stimuliPlays.size(); i++) {
-        pTrial->stimuliPlays.set(i, testLauncher.getPlayCount(i));
+    for (int i = 0; i < pTrial->responses.size(); i++) {
         pTrial->responses.set(i, int(ratingSliders[i]->getValue()));
         if (ratingSliders[i]->getValue() == 100)
             count100++;
@@ -191,7 +196,7 @@ void MushraComponent::clearResponses() {
             ratingSliders[i]->setColour(Slider::ColourIds::thumbColourId, Colours::grey);
             ratingSliders[i]->setAlpha(SLIDER_DISABLED_ALPHA);
 
-            pTrial->responses.set(i, 100);
+            pTrial->responses.set(i, MUSHRA_DEFAULT_SCORE);
             pTrial->responsesMoved.set(i, false);
             
             pTrial->comments[i].clear();

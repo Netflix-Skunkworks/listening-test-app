@@ -25,6 +25,8 @@ public:
 
     int getTestIdx() { return testIdx; };
 
+    File getSelectedTestFile();
+
     bool getSkipSurvey() { return skipDemographicSurvey; };
 
     String getStimDirectory();
@@ -44,6 +46,9 @@ private:
     String testID = String();
     int testIdx = -1;
     bool skipDemographicSurvey = false;
+
+    /* One entry per combo box item, in the same order. */
+    Array<File> testSpecFiles;
 
     ComboBox testSelectComboBox;
     TextEditor nameTextBox;
