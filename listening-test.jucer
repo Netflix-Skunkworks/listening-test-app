@@ -63,13 +63,13 @@
   </MAINGROUP>
   <EXPORTFORMATS>
     <XCODE_MAC targetFolder="Builds/MacOSX" smallIcon="q32QZy" bigIcon="q32QZy"
-               extraDefs="JUCE_MODAL_LOOPS_PERMITTED=1">
+               extraDefs="JUCE_MODAL_LOOPS_PERMITTED=1" hardenedRuntime="1">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="Listening Test"
-                       macOSDeploymentTarget="12" osxCompatibility="12 SDK"/>
+                       macOSDeploymentTarget="12" osxCompatibility="12 SDK" codeSigningIdentity="-"/>
         <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="Listening Test"
-                       macOSDeploymentTarget="12" osxCompatibility="12 SDK"/>
-      </CONFIGURATIONS>
+                       macOSDeploymentTarget="12" osxCompatibility="12 SDK" codeSigningIdentity="-"/>
+        </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_core" path="./JUCE/modules"/>
         <MODULEPATH id="juce_events" path="./JUCE/modules"/>
