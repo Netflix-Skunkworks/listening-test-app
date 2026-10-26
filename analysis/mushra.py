@@ -3,7 +3,10 @@ import matplotlib.pyplot
 
 
 from plot import plot_one_subject, plot_one_stimulus, plot_all_listeners, plot_all
-from utility import parse_xml_results
+from utility import parse_xml_results, plot_path
+
+# MUSHRA scale is 0-100; headroom keeps wide small-sample CIs from stretching the axis
+YLIM = (0, 120)
 
 
 def plot_mushra_results(listeners_dict,
@@ -33,19 +36,19 @@ def plot_mushra_results(listeners_dict,
     if plot_subjects:
         for listener in listeners_dict:
             results_df = listeners_dict[listener]
-            listener_filename = output_dir + "%s_%s.png" % (test_name, listener)
-            plot_one_subject(results_df, listener_filename, listener)
+            listener_filename = plot_path(output_dir, "%s_%s.png" % (test_name, listener))
+            plot_one_subject(results_df, listener_filename, listener, ylim=YLIM)
 
     if plot_stimuli:
         for stim in stimuli:
-            stimulus_filename = output_dir + "%s_%s.png" % (test_name, stim)
-            plot_one_stimulus(listeners_dict, stimulus_filename, stim)
+            stimulus_filename = plot_path(output_dir, "%s_%s.png" % (test_name, stim))
+            plot_one_stimulus(listeners_dict, stimulus_filename, stim, ylim=YLIM)
 
-    all_listeners_filename = output_dir + "%s_all_listeners.png" % test_name
-    plot_all_listeners(listeners_dict, all_listeners_filename, title=test_name)
+    all_listeners_filename = plot_path(output_dir, "%s_all_listeners.png" % test_name)
+    plot_all_listeners(listeners_dict, all_listeners_filename, title=test_name, ylim=YLIM)
 
-    all_items_filename = output_dir + "%s_all_items.png" % test_name
-    plot_all(listeners_dict, all_items_filename, title=test_name)
+    all_items_filename = plot_path(output_dir, "%s_all_items.png" % test_name)
+    plot_all(listeners_dict, all_items_filename, title=test_name, ylim=YLIM)
 
     if show_plots:
         matplotlib.pyplot.show()
