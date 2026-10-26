@@ -1,6 +1,13 @@
 import glob
+import os
 import xml.etree.ElementTree as elementTree
 import pandas
+import re
+
+
+def plot_path(output_dir, name):
+    """Join output_dir and name, replacing characters illegal in Windows filenames."""
+    return os.path.join(output_dir, re.sub(r'[<>:"/\\|?*]', "_", name))
 
 
 def longest_common_substring(s1, s2):
@@ -137,12 +144,10 @@ def parse_xml_results(input_data_dir, codec_map=None):
                                     val = the values specified in the header of the xml files
     """
     print("searching for results in " + input_data_dir)
-    if not input_data_dir.endswith("/"):
-        input_data_dir += "/"
-    temp_file_list = glob.glob(input_data_dir + 'temp*.xml')
+    temp_file_list = glob.glob(os.path.join(input_data_dir, 'temp*.xml'))
     if len(temp_file_list) > 0:
         print("Temp files exist: the analysis results may be incomplete/incorrect")
-    file_list = glob.glob(input_data_dir + '*.xml')
+    file_list = sorted(glob.glob(os.path.join(input_data_dir, '*.xml')))
     listeners_dict = dict()
     test_info_dict = dict()
 

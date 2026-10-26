@@ -22,3 +22,6 @@ If you would like to have individual plot for each subject and stimulus:
 ```
 >> python analyze_cli.py -i "./resources/mushra_example_results/" -o "./output/" -psub -psti
 ```
+
+On Windows, activate with `.venv\Scripts\Activate.ps1`; the same `analyze_cli.py` is used on all platforms.
+Tests: `pip install pytest && python -m pytest tests`

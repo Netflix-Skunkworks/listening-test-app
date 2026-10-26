@@ -36,7 +36,7 @@ def plot_dataframe_errorbar(ax, df, errbar_df):
     return ax
 
 
-def plot_one_stimulus(df_list, output_filename, stimulus):
+def plot_one_stimulus(df_list, output_filename, stimulus, ylim=None):
     fig = matplotlib.pylab.figure()
     ax = fig.add_axes([0.1, 0.15, 0.7, 0.7])
     filtered_df_list = {}
@@ -73,6 +73,8 @@ def plot_one_stimulus(df_list, output_filename, stimulus):
     ax = plot_dataframe_errorbar(ax, df, bar_size)
     ax.autoscale(enable='true')
     ax.set_title(stimulus)
+    if ylim:  # view only; the confidence intervals themselves are not clipped
+        ax.set_ylim(ylim)
     fig.savefig(output_filename)
     matplotlib.pyplot.close()
 
@@ -80,7 +82,7 @@ def plot_one_stimulus(df_list, output_filename, stimulus):
 
 
 # plot results and compare listeners
-def plot_all_listeners(df_list, output_filename, ref_codec='reference', title='listening_test'):
+def plot_all_listeners(df_list, output_filename, ref_codec='reference', title='listening_test', ylim=None):
     fig = matplotlib.pylab.figure()
     ax = fig.add_axes([0.1, 0.15, 0.7, 0.7])
 
@@ -136,6 +138,8 @@ def plot_all_listeners(df_list, output_filename, ref_codec='reference', title='l
     ax.grid('on', axis='x', which='minor', color='k', linestyle=':', alpha=.25)
     ax.legend(bbox_to_anchor=(1, 1), fontsize='12')
     ax.set_title(title + ': ' + str(len(df_list)) + ' listeners')
+    if ylim:  # view only; the confidence intervals themselves are not clipped
+        ax.set_ylim(ylim)
     fig.savefig(output_filename)
 
     return ax
@@ -170,7 +174,7 @@ def get_conf_from_dataframe(chart, alpha_value=0.05):
 
 
 # diff-plot a single user
-def plot_one_subject(df, output_filename, subject, ref_codec='reference'):
+def plot_one_subject(df, output_filename, subject, ref_codec='reference', ylim=None):
     fig = matplotlib.pylab.figure()
     ax = fig.add_axes([0.1, 0.15, 0.7, 0.7])
 
@@ -201,12 +205,14 @@ def plot_one_subject(df, output_filename, subject, ref_codec='reference'):
     ax = plot_dataframe_errorbar(ax, df, bar_size)
     ax.autoscale(enable='true')
     ax.set_title(subject)
+    if ylim:  # view only; the confidence intervals themselves are not clipped
+        ax.set_ylim(ylim)
     fig.savefig(output_filename)
     return ax
 
 
 # plot all items
-def plot_all(df_list, output_filename, ref_codec='reference', title='listening_test'):
+def plot_all(df_list, output_filename, ref_codec='reference', title='listening_test', ylim=None):
     fig = matplotlib.pylab.figure()
     ax = fig.add_axes([0.1, 0.15, 0.8, 0.8])
 
@@ -263,6 +269,8 @@ def plot_all(df_list, output_filename, ref_codec='reference', title='listening_t
     ax.legend(bbox_to_anchor=(1, 1), fontsize='12')
     ax.set_title(title + ': ' + str(len(df_list)) + ' listeners')
 
+    if ylim:  # view only; the confidence intervals themselves are not clipped
+        ax.set_ylim(ylim)
     fig.savefig(output_filename)
 
     return ax
