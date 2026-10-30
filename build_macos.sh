@@ -1,22 +1,25 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# Copyright(C) 2026 Netflix, Inc.
+set -euo pipefail
+trap 'echo "error: macOS build failed at line $LINENO" >&2' ERR
+cd -- "$(dirname -- "$0")"
 
-git submodule init && git submodule update
-
-# Refuse to build against a JUCE the licence does not cover. Git pins a
-# submodule by commit rather than by tag, so the tag is named here and in
-# .gitmodules, and checked against what is actually checked out.
-JUCE_TAG=$(git config --file .gitmodules submodule.JUCE.tag)
-if [ "$(git -C JUCE rev-parse HEAD)" != "$(git -C JUCE rev-parse "$JUCE_TAG^{commit}" 2>/dev/null)" ]; then
-    echo "error: JUCE submodule is not at tag $JUCE_TAG" >&2
-    echo "       run: git -C JUCE fetch --tags && git -C JUCE checkout $JUCE_TAG" >&2
+# The submodule commit and licensed JUCE tag remain the source of truth.
+git submodule update --init --recursive
+juce_tag=$(git config --file .gitmodules submodule.JUCE.tag)
+juce_head=$(git -C JUCE rev-parse HEAD)
+juce_tag_commit=$(git -C JUCE rev-parse "$juce_tag^{commit}")
+if [[ "$juce_head" != "$juce_tag_commit" ]]; then
+    echo "error: JUCE submodule must be at tag $juce_tag" >&2
     exit 1
 fi
 
-# Projucer's own Xcode project ships with a deployment target older than the
-# minimum current Xcode SDKs accept, and it belongs to the JUCE submodule, so it
-# is overridden here rather than edited in place. The app project sets its own
-# target in listening-test.jucer.
+configuration=${BUILD_CONFIGURATION:-Debug}
+case "$configuration" in Debug|Release) ;; *) echo 'error: BUILD_CONFIGURATION must be Debug or Release' >&2; exit 1 ;; esac
 xcodebuild -project JUCE/extras/Projucer/Builds/MacOSX/Projucer.xcodeproj \
-    MACOSX_DEPLOYMENT_TARGET=12.0
-./JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --resave ./listening-test.jucer
-xcodebuild -project Builds/MacOSX/Listening\ Test.xcodeproj
+    -configuration Debug MACOSX_DEPLOYMENT_TARGET=12.0 CODE_SIGNING_ALLOWED=NO build
+projucer=JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer
+"$projucer" --resave listening-test.jucer
+xcodebuild -project 'Builds/MacOSX/Listening Test.xcodeproj' \
+    -configuration "$configuration" CODE_SIGNING_ALLOWED="${CODE_SIGNING_ALLOWED:-NO}" build
+echo "Application: $PWD/Builds/MacOSX/build/$configuration/Listening Test.app"

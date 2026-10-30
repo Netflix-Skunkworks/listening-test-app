@@ -1,65 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="EEkRWf" name="Listening Test" reportAppUsage="0" splashScreenColour="Dark"
-              projectType="guiapp" version="3.3.0" bundleIdentifier="com.netflix.listeningtest"
+              projectType="guiapp" defines="JUCE_APP_CONFIG_HEADER=&quot;AppConfig.h&quot;" version="4.0.0" bundleIdentifier="com.netflix.listeningtest"
               includeBinaryInAppConfig="1" jucerFormatVersion="1" companyEmail="phill@netflix.com"
-              displaySplashScreen="1" companyName="Netflix, Inc." companyCopyright="Copyright (c) 2017-2023 Netflix, Inc."
+              displaySplashScreen="1" companyName="Netflix, Inc." companyCopyright="Copyright (c) 2017-2026 Netflix, Inc."
               companyWebsite="https://about.netflix.com/en">
   <MAINGROUP id="cjGZLA" name="Listening Test">
-    <FILE id="atyVdq" name="CommentBox.h" compile="0" resource="0" file="listening-test/CommentBox.h"/>
-    <FILE id="IDNAWE" name="SurveyComponent.cpp" compile="1" resource="0"
-          file="listening-test/SurveyComponent.cpp"/>
-    <FILE id="M9JVHi" name="SurveyComponent.h" compile="0" resource="0"
-          file="listening-test/SurveyComponent.h"/>
-    <FILE id="fr8FAe" name="BasicSurveyComponent.h" compile="0" resource="0"
-          file="listening-test/BasicSurveyComponent.h"/>
-    <FILE id="P4yHlj" name="TestTypes.cpp" compile="1" resource="0" file="listening-test/TestTypes.cpp"/>
-    <FILE id="CZPXNl" name="BaseTestComponent.h" compile="0" resource="0"
-          file="listening-test/BaseTestComponent.h"/>
-    <FILE id="ObZ9DG" name="BaseTestComponent.cpp" compile="1" resource="0"
-          file="listening-test/BaseTestComponent.cpp"/>
-    <FILE id="xUgsTt" name="MushraComponent.cpp" compile="1" resource="0"
-          file="listening-test/MushraComponent.cpp"/>
-    <FILE id="wHoUEH" name="NewTestSelectComponent.cpp" compile="1" resource="0"
-          file="listening-test/NewTestSelectComponent.cpp"/>
-    <FILE id="IYGnLA" name="TestManagerComponent.h" compile="0" resource="0"
-          file="listening-test/TestManagerComponent.h"/>
-    <FILE id="lQd88L" name="NewTestSelectComponent.h" compile="0" resource="0"
-          file="listening-test/NewTestSelectComponent.h"/>
-    <FILE id="kvlVdH" name="TestManagerComponent.cpp" compile="1" resource="0"
-          file="listening-test/TestManagerComponent.cpp"/>
-    <FILE id="ihk4qY" name="DemoComponent.cpp" compile="1" resource="0"
-          file="listening-test/DemoComponent.cpp"/>
-    <FILE id="YKzvHb" name="BS1116Component.cpp" compile="1" resource="0"
-          file="listening-test/BS1116Component.cpp"/>
-    <FILE id="DK2Ma3" name="AVABTestComponent.cpp" compile="1" resource="0"
-          file="listening-test/AVABTestComponent.cpp"/>
-    <FILE id="KoVZ4t" name="ABTestComponent.cpp" compile="1" resource="0"
-          file="listening-test/ABTestComponent.cpp"/>
-    <FILE id="bBE31F" name="AVABTestComponent.h" compile="0" resource="0"
-          file="listening-test/AVABTestComponent.h"/>
-    <FILE id="VnjkzH" name="ABTestComponent.h" compile="0" resource="0"
-          file="listening-test/ABTestComponent.h"/>
-    <FILE id="JSfkLq" name="BS1116Component.h" compile="0" resource="0"
-          file="listening-test/BS1116Component.h"/>
-    <FILE id="gTa0lZ" name="DemoComponent.h" compile="0" resource="0" file="listening-test/DemoComponent.h"/>
-    <FILE id="lURoVu" name="MushraComponent.h" compile="0" resource="0"
-          file="listening-test/MushraComponent.h"/>
-    <FILE id="q32QZy" name="Headphones_512x512.png" compile="0" resource="1"
-          file="listening-test/Headphones_512x512.png"/>
-    <FILE id="DU9kT0" name="Trial.h" compile="0" resource="0" file="listening-test/Trial.h"/>
-    <FILE id="EQj5qn" name="Trial.cpp" compile="1" resource="0" file="listening-test/Trial.cpp"/>
-    <FILE id="I8T2MM" name="AudioPlayer.cpp" compile="1" resource="0" file="listening-test/AudioPlayer.cpp"/>
-    <FILE id="MOW4UI" name="AudioPlayer.h" compile="0" resource="0" file="listening-test/AudioPlayer.h"/>
-    <FILE id="NMaMjN" name="guisettings.h" compile="0" resource="0" file="listening-test/guisettings.h"/>
-    <FILE id="MyIsFn" name="Main.cpp" compile="1" resource="0" file="listening-test/Main.cpp"/>
-    <FILE id="t8lXSr" name="MainComponent.cpp" compile="1" resource="0"
-          file="listening-test/MainComponent.cpp"/>
-    <FILE id="uNZYR4" name="MainComponent.h" compile="0" resource="0" file="listening-test/MainComponent.h"/>
-    <FILE id="pSimeN" name="TestLauncher.cpp" compile="1" resource="0"
-          file="listening-test/TestLauncher.cpp"/>
-    <FILE id="Xv3c9Y" name="TestLauncher.h" compile="0" resource="0" file="listening-test/TestLauncher.h"/>
-    <FILE id="eBAWhz" name="TestTypes.h" compile="0" resource="0" file="listening-test/TestTypes.h"/>
+    <GROUP id="group_app" name="app">
+      <FILE id="MyIsFn" name="Main.cpp" compile="1" resource="0" file="listening-test/app/Main.cpp"/>
+      <FILE id="t8lXSr" name="MainComponent.cpp" compile="1" resource="0" file="listening-test/app/MainComponent.cpp"/>
+      <FILE id="uNZYR4" name="MainComponent.h" compile="0" resource="0" file="listening-test/app/MainComponent.h"/>
+      <FILE id="window1" name="MainDocumentWindow.cpp" compile="1" resource="0" file="listening-test/app/MainDocumentWindow.cpp"/>
+      <FILE id="window0" name="MainDocumentWindow.h" compile="0" resource="0" file="listening-test/app/MainDocumentWindow.h"/>
+      <FILE id="pSimeN" name="TestLauncher.cpp" compile="1" resource="0" file="listening-test/app/TestLauncher.cpp"/>
+      <FILE id="Xv3c9Y" name="TestLauncher.h" compile="0" resource="0" file="listening-test/app/TestLauncher.h"/>
+    </GROUP>
+    <GROUP id="group_session" name="session">
+      <FILE id="ref21a" name="ResultsStore.cpp" compile="1" resource="0" file="listening-test/session/ResultsStore.cpp"/>
+      <FILE id="ref20a" name="ResultsStore.h" compile="0" resource="0" file="listening-test/session/ResultsStore.h"/>
+      <FILE id="ref01a" name="TestSession.cpp" compile="1" resource="0" file="listening-test/session/TestSession.cpp"/>
+      <FILE id="ref00a" name="TestSession.h" compile="0" resource="0" file="listening-test/session/TestSession.h"/>
+      <FILE id="P4yHlj" name="TestTypes.cpp" compile="1" resource="0" file="listening-test/session/TestTypes.cpp"/>
+      <FILE id="eBAWhz" name="TestTypes.h" compile="0" resource="0" file="listening-test/session/TestTypes.h"/>
+      <FILE id="EQj5qn" name="Trial.cpp" compile="1" resource="0" file="listening-test/session/Trial.cpp"/>
+      <FILE id="DU9kT0" name="Trial.h" compile="0" resource="0" file="listening-test/session/Trial.h"/>
+      <FILE id="ref11a" name="TrialBuilder.cpp" compile="1" resource="0" file="listening-test/session/TrialBuilder.cpp"/>
+      <FILE id="ref10a" name="TrialBuilder.h" compile="0" resource="0" file="listening-test/session/TrialBuilder.h"/>
+    </GROUP>
+    <GROUP id="group_media" name="media">
+      <FILE id="aud1cpp" name="AudioDeviceAdapter.cpp" compile="1" resource="0" file="listening-test/media/AudioDeviceAdapter.cpp"/>
+      <FILE id="aud1h" name="AudioDeviceAdapter.h" compile="0" resource="0" file="listening-test/media/AudioDeviceAdapter.h"/>
+      <FILE id="aud0cpp" name="AudioEngine.cpp" compile="1" resource="0" file="listening-test/media/AudioEngine.cpp"/>
+      <FILE id="aud0h" name="AudioEngine.h" compile="0" resource="0" file="listening-test/media/AudioEngine.h"/>
+      <FILE id="I8T2MM" name="AudioPlayer.cpp" compile="1" resource="0" file="listening-test/media/AudioPlayer.cpp"/>
+      <FILE id="MOW4UI" name="AudioPlayer.h" compile="0" resource="0" file="listening-test/media/AudioPlayer.h"/>
+      <FILE id="ref31a" name="TrialMediaLoader.cpp" compile="1" resource="0" file="listening-test/media/TrialMediaLoader.cpp"/>
+      <FILE id="ref30a" name="TrialMediaLoader.h" compile="0" resource="0" file="listening-test/media/TrialMediaLoader.h"/>
+      <FILE id="aud2cpp" name="VideoPlaybackCoordinator.cpp" compile="1" resource="0" file="listening-test/media/VideoPlaybackCoordinator.cpp"/>
+      <FILE id="aud2h" name="VideoPlaybackCoordinator.h" compile="0" resource="0" file="listening-test/media/VideoPlaybackCoordinator.h"/>
+    </GROUP>
+    <GROUP id="group_configuration" name="configuration">
+      <FILE id="config0cpp" name="TestSpecification.cpp" compile="1" resource="0" file="listening-test/configuration/TestSpecification.cpp"/>
+      <FILE id="config0h" name="TestSpecification.h" compile="0" resource="0" file="listening-test/configuration/TestSpecification.h"/>
+      <FILE id="config1cpp" name="TestSpecificationRepository.cpp" compile="1" resource="0" file="listening-test/configuration/TestSpecificationRepository.cpp"/>
+      <FILE id="config1h" name="TestSpecificationRepository.h" compile="0" resource="0" file="listening-test/configuration/TestSpecificationRepository.h"/>
+      <FILE id="config2cpp" name="TestSpecificationTable.cpp" compile="1" resource="0" file="listening-test/configuration/TestSpecificationTable.cpp"/>
+      <FILE id="config2h" name="TestSpecificationTable.h" compile="0" resource="0" file="listening-test/configuration/TestSpecificationTable.h"/>
+    </GROUP>
+    <GROUP id="group_ui" name="ui">
+      <FILE id="KoVZ4t" name="ABTestComponent.cpp" compile="1" resource="0" file="listening-test/ui/ABTestComponent.cpp"/>
+      <FILE id="VnjkzH" name="ABTestComponent.h" compile="0" resource="0" file="listening-test/ui/ABTestComponent.h"/>
+      <FILE id="themeCpp" name="AppTheme.cpp" compile="1" resource="0" file="listening-test/ui/AppTheme.cpp"/>
+      <FILE id="NMaMjN" name="AppTheme.h" compile="0" resource="0" file="listening-test/ui/AppTheme.h"/>
+      <FILE id="ObZ9DG" name="BaseTestComponent.cpp" compile="1" resource="0" file="listening-test/ui/BaseTestComponent.cpp"/>
+      <FILE id="CZPXNl" name="BaseTestComponent.h" compile="0" resource="0" file="listening-test/ui/BaseTestComponent.h"/>
+      <FILE id="config5cpp" name="BasicSurveyComponent.cpp" compile="1" resource="0" file="listening-test/ui/BasicSurveyComponent.cpp"/>
+      <FILE id="fr8FAe" name="BasicSurveyComponent.h" compile="0" resource="0" file="listening-test/ui/BasicSurveyComponent.h"/>
+      <FILE id="config6cpp" name="BsuSurveyComponent.cpp" compile="1" resource="0" file="listening-test/ui/BsuSurveyComponent.cpp"/>
+      <FILE id="yPgODA" name="BsuSurveyComponent.h" compile="0" resource="0" file="listening-test/ui/BsuSurveyComponent.h"/>
+      <FILE id="atyVdq" name="CommentBox.h" compile="0" resource="0" file="listening-test/ui/CommentBox.h"/>
+      <FILE id="wHoUEH" name="NewTestSelectComponent.cpp" compile="1" resource="0" file="listening-test/ui/NewTestSelectComponent.cpp"/>
+      <FILE id="lQd88L" name="NewTestSelectComponent.h" compile="0" resource="0" file="listening-test/ui/NewTestSelectComponent.h"/>
+      <FILE id="phase4b" name="PlaybackAction.h" compile="0" resource="0" file="listening-test/ui/PlaybackAction.h"/>
+      <FILE id="phase4d" name="PlaybackControls.cpp" compile="1" resource="0" file="listening-test/ui/PlaybackControls.cpp"/>
+      <FILE id="phase4c" name="PlaybackControls.h" compile="0" resource="0" file="listening-test/ui/PlaybackControls.h"/>
+      <FILE id="view03" name="RatingTestComponent.cpp" compile="1" resource="0" file="listening-test/ui/RatingTestComponent.cpp"/>
+      <FILE id="view02" name="RatingTestComponent.h" compile="0" resource="0" file="listening-test/ui/RatingTestComponent.h"/>
+      <FILE id="IDNAWE" name="SurveyComponent.cpp" compile="1" resource="0" file="listening-test/ui/SurveyComponent.cpp"/>
+      <FILE id="M9JVHi" name="SurveyComponent.h" compile="0" resource="0" file="listening-test/ui/SurveyComponent.h"/>
+      <FILE id="kvlVdH" name="TestManagerComponent.cpp" compile="1" resource="0" file="listening-test/ui/TestManagerComponent.cpp"/>
+      <FILE id="IYGnLA" name="TestManagerComponent.h" compile="0" resource="0" file="listening-test/ui/TestManagerComponent.h"/>
+      <FILE id="view01" name="TestViewControls.cpp" compile="1" resource="0" file="listening-test/ui/TestViewControls.cpp"/>
+      <FILE id="view00" name="TestViewControls.h" compile="0" resource="0" file="listening-test/ui/TestViewControls.h"/>
+    </GROUP>
+    <GROUP id="group_assets" name="assets">
+      <FILE id="q32QZy" name="Headphones_512x512.png" compile="0" resource="1" file="assets/Headphones_512x512.png"/>
+    </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>
     <XCODE_MAC targetFolder="Builds/MacOSX" smallIcon="q32QZy" bigIcon="q32QZy"
@@ -69,7 +85,7 @@
                        macOSDeploymentTarget="12" osxCompatibility="12 SDK" codeSigningIdentity="-"/>
         <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="Listening Test"
                        macOSDeploymentTarget="12" osxCompatibility="12 SDK" codeSigningIdentity="-"/>
-        </CONFIGURATIONS>
+      </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_core" path="./JUCE/modules"/>
         <MODULEPATH id="juce_events" path="./JUCE/modules"/>
