@@ -5,3 +5,7 @@ JuceLibraryCode/*
 analysis/*png
 *pyc
 analysis/.venv
+
+__pycache__/
+.venv/
+analysis/output/
